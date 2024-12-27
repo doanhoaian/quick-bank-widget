@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">QuickBank Widget</string>
+    <string name="action_settings">Settings</string>
+    <string name="label_qr_photo">QR Photo</string>
+    <string name="action_add_qr_code">Add QR Code</string>
+    <string name="action_scanner">Scanner</string>
+    <string name="label_image">Image</string>
 </resources>
