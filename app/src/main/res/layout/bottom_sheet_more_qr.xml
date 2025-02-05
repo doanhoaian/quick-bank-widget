@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/shape_background_bottom_sheet_v1"
-    android:clipToOutline="true"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
-    tools:ignore="UnusedAttribute">
+    android:backgroundTint="@color/neutral_light_lightest"
+    android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="50dp"
-        android:layout_height="5dp"
-        android:layout_margin="10dp"
-        android:alpha="0.4"
-        app:cardBackgroundColor="@android:color/darker_gray"
-        app:cardCornerRadius="100dp"
-        app:cardElevation="0dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:background="@drawable/shape_oval_surface_variant"
+            android:backgroundTint="@color/neutral_dark_lightest" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/button_widget"
@@ -33,28 +34,11 @@
         android:paddingEnd="20dp"
         android:paddingBottom="15dp"
         android:text="Tạo Widget cho QR này"
-        android:textColor="?attr/colorOnSurface"
+        android:textColor="@color/neutral_dark_dark"
         android:textSize="18sp"
         android:textStyle="bold"
         app:drawableStartCompat="@drawable/svg_solar_widget_add"
-        app:drawableTint="?attr/colorOnSurface" />
-
-    <TextView
-        android:id="@+id/button_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawablePadding="15dp"
-        android:gravity="center_vertical"
-        android:paddingStart="20dp"
-        android:paddingTop="15dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="15dp"
-        android:text="Chỉnh sửa"
-        android:textColor="?attr/colorOnSurface"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:drawableStartCompat="@drawable/svg_solar_pen_new_round"
-        app:drawableTint="?attr/colorOnSurface" />
+        app:drawableTint="@color/neutral_dark_dark" />
 
     <TextView
         android:id="@+id/button_share"
@@ -67,11 +51,11 @@
         android:paddingEnd="20dp"
         android:paddingBottom="15dp"
         android:text="Chia sẻ"
-        android:textColor="?attr/colorOnSurface"
+        android:textColor="@color/neutral_dark_dark"
         android:textSize="18sp"
         android:textStyle="bold"
         app:drawableStartCompat="@drawable/svg_solar_share"
-        app:drawableTint="?attr/colorOnSurface" />
+        app:drawableTint="@color/neutral_dark_dark" />
 
     <TextView
         android:id="@+id/button_download"
@@ -84,11 +68,11 @@
         android:paddingEnd="20dp"
         android:paddingBottom="15dp"
         android:text="Tải về"
-        android:textColor="?attr/colorOnSurface"
+        android:textColor="@color/neutral_dark_dark"
         android:textSize="18sp"
         android:textStyle="bold"
         app:drawableStartCompat="@drawable/svg_solar_download_minimalistic"
-        app:drawableTint="?attr/colorOnSurface" />
+        app:drawableTint="@color/neutral_dark_dark" />
 
     <TextView
         android:id="@+id/button_delete"
@@ -101,9 +85,9 @@
         android:paddingEnd="20dp"
         android:paddingBottom="15dp"
         android:text="Xóa QR Code"
-        android:textColor="?attr/colorError"
+        android:textColor="@color/support_error_dark"
         android:textSize="18sp"
         android:textStyle="bold"
         app:drawableStartCompat="@drawable/svg_solar_trash_bin_trash"
-        app:drawableTint="?attr/colorError" />
+        app:drawableTint="@color/support_error_dark" />
 </LinearLayout>

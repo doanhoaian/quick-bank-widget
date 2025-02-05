@@ -5,4 +5,7 @@
     <string name="action_add_qr_code">Add QR Code</string>
     <string name="action_scanner">Scanner</string>
     <string name="label_image">Image</string>
+    <string name="label_textview">TextView</string>
+    <string name="message_error_try_again">Đã xảy ra lỗi, vui lòng thử lại</string>
+    <string name="info_help_mail">help.dihaver@gmail.com</string>
 </resources>

@@ -11,8 +11,6 @@ class MoreQrBottomSheet(context: Context, private val listener: MoreQrBottomShee
 
     private lateinit var binding: BottomSheetMoreQrBinding
 
-    var onDismissListener: (() -> Unit)? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -20,18 +18,32 @@ class MoreQrBottomSheet(context: Context, private val listener: MoreQrBottomShee
         setContentView(binding.root)
         this.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        binding.buttonDelete.setOnClickListener {
-            listener.delete()
+        binding.buttonWidget.setOnClickListener {
+            listener.onWidget()
             dismiss()
         }
 
-        setOnDismissListener {
-            onDismissListener?.invoke()
+        binding.buttonShare.setOnClickListener {
+            listener.onShare()
+            dismiss()
+        }
+
+        binding.buttonDownload.setOnClickListener {
+            listener.onDownload()
+            dismiss()
+        }
+
+        binding.buttonDelete.setOnClickListener {
+            listener.onDelete()
+            dismiss()
         }
     }
 
     interface MoreQrBottomSheetListener {
-        fun delete()
+        fun onWidget()
+        fun onShare()
+        fun onDownload()
+        fun onDelete()
     }
 
 }

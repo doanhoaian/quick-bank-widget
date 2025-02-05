@@ -5,23 +5,15 @@ import java.util.UUID
 
 object QrProcess {
 
-    //        val codeBank = Regex("9704\\d{2}").find(qrData)?.value
+    fun extraQrBank(qrContent: String): QrEntity {
 
-    fun processQrData(qrData: String): QrEntity? {
-
-        if (!qrData.contains("QRIBFTTA")) return null // Không theo chuẩn QR quốc tế -- ERROR
-
-        val bankInfoResult = BankBinVN.getBankInfo(qrData)
-            ?: return null // Không chứa mã BIN hỗ trợ -- ERROR
-
-        val (bankBin, objectBankBinVN) = bankInfoResult
+        val bankInfoResult = BankBinVN.getBankInfo(qrContent)
+        val (bankBin, objectBankBinVN) = bankInfoResult!!
         val (bankName, bankShortName, bankCode) = objectBankBinVN
 
-        val accountNumber = Regex("${bankBin}011\\d(.*?)0208").find(qrData)?.groups?.get(1)?.value
-            ?: return null // Không chứa số tài khoản -- ERROR
-
-        val accountName = Regex("(?<=5912)[A-Z\\s]+").find(qrData)?.value?.trim()
-            ?: "Unknown Name" // Không chứa tên chủ tài khoản
+        val accNumber = Regex("${bankBin}01\\d{2}(.*?)0208").find(qrContent)?.groups?.get(1)?.value!!
+        val accHolderName = Regex("(?<=59\\d{2})[A-Z\\s]+").find(qrContent)?.value?.trim() ?: ""
+        val newQrContent = BankBinVN.generateQrCode(bankBin, accNumber, accHolderName)
 
         return QrEntity(
             id = generateId(),
@@ -29,12 +21,26 @@ object QrProcess {
             bankBin = bankBin,
             bankShortName = bankShortName,
             bankCode = bankCode,
-            bankLogo = BankBinVN.getBankLogo(bankCode),
-            bankLogoFull = BankBinVN.getBankLogoFull(bankCode),
-            accountNumber = accountNumber,
-            accountName = accountName,
-            qrData = qrData
+            bankIconRes = BankBinVN.getBankIcon(bankCode),
+            bankLogoRes = BankBinVN.getBankLogo(bankCode),
+            accNumber = accNumber,
+            accHolderName = accHolderName,
+            accAlias = "",
+            qrContent = newQrContent,
+            cusQrColor = "#FF000000",
+            cusQrIconPath = BitmapUtils.convertNameToPath(BankBinVN.getBankIcon(bankCode), BitmapUtils.PathType.RES),
+            cusThemePath = BitmapUtils.convertNameToPath("bg_not_have", BitmapUtils.PathType.RES),
         )
+    }
+
+    fun isQrBank(qrData: String): Boolean {
+        // Không theo chuẩn QR quốc tế -- ERROR
+        if (!qrData.contains("QRIBFTTA")) return false
+        // Không chứa mã BIN hỗ trợ -- ERROR
+        val bankInfoResult = BankBinVN.getBankInfo(qrData) ?: return false
+        // Không chứa số tài khoản -- ERROR
+        Regex("${bankInfoResult.first}01\\d{2}(.*?)0208").find(qrData)?.groups?.get(1)?.value ?: return false
+        return true
     }
 
     private fun generateId(): String {

@@ -12,10 +12,10 @@ class QrStorage(context: Context) {
         const val TAG = "QrStorage"
         const val QR_STORAGE = "qr_storage"
         const val QR_LIST = "qr_list"
+        const val ID_QR_CURRENT = "id_qr_current"
     }
 
-    private val sharedPreferences =
-        context.applicationContext.getSharedPreferences(QR_STORAGE, Context.MODE_PRIVATE)
+    private val sharedPreferences = context.applicationContext.getSharedPreferences(QR_STORAGE, Context.MODE_PRIVATE)
     private val gson = Gson()
     private val qrListType = object : TypeToken<List<QrEntity>>() {}.type
 
@@ -55,23 +55,37 @@ class QrStorage(context: Context) {
         return qrCache!!
     }
 
-    fun addQr(qr: QrEntity): Boolean {
+    fun addQr(qr: QrEntity, isDuplicate: Boolean = false): Boolean {
         val listQrs = ensureCacheLoaded()
-
-        if (listQrs.any { it.bankBin == qr.bankBin && it.accountNumber == qr.accountNumber }) {
-            Log.w(TAG, "QR with both bankBin ${qr.bankBin} and accountNumber ${qr.accountNumber} already exists.")
-            return false
-        }
 
         if (listQrs.any { it.id == qr.id }) {
             Log.w(TAG, "QR with ID ${qr.id} already exists.")
             return false
         }
 
+        if (!isDuplicate) {
+            if (listQrs.any { it.bankBin == qr.bankBin && it.accNumber == qr.accNumber }) {
+                Log.e(TAG, "QR already exists.")
+                return false
+            }
+        }
+
         listQrs.add(qr)
 
         saveQrListToStorage()
         return true
+    }
+
+    fun getQrCurrent(): QrEntity? {
+        val id = sharedPreferences.getString(ID_QR_CURRENT, "")!!
+        if (id.isNotEmpty()) {
+            return getQrById(id)
+        }
+        return null
+    }
+
+    fun updateIdQrCurrent(id: String) {
+        sharedPreferences.edit().putString(ID_QR_CURRENT, id).apply()
     }
 
     fun getQrById(id: String): QrEntity? {

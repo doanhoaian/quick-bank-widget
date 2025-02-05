@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="15dp"
+    app:cardBackgroundColor="@color/neutral_light_lightest"
+    app:strokeColor="@color/neutral_light_darkest">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/image_icon_bank"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/shape_oval_stroke_white"
+            android:padding="10dp"
+            android:src="@drawable/icon_bank_vcb" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
+
+            <TextView
+                android:id="@+id/text_acc_alias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="middle"
+                android:maxLines="2"
+                android:padding="2dp"
+                android:text="@string/label_textview"
+                android:textColor="@color/highlight_darkest"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_acc_holder_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="middle"
+                android:maxLines="2"
+                android:padding="2dp"
+                android:text="@string/label_textview"
+                android:textColor="@color/neutral_dark_darkest"
+                android:textSize="15.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_acc_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="middle"
+                android:maxLines="2"
+                android:padding="2dp"
+                android:text="@string/label_textview"
+                android:textColor="@color/neutral_dark_medium"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/image_select"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/select_svg_fonts_check_circle" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

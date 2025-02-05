@@ -1,7 +1,9 @@
 [versions]
-agp = "8.5.2"
-blurview = "version-2.0.5"
+agp = "8.7.3"
+androidsvg = "1.4"
+blurview = "version-2.0.6"
 core = "3.5.3"
+floatingactionbutton = "1.10.1"
 glide = "4.16.0"
 gson = "2.11.0"
 kotlin = "1.9.0"
@@ -11,14 +13,18 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
 material = "1.12.0"
-activity = "1.9.3"
+activity = "1.10.0"
 constraintlayout = "2.2.0"
+paletteKtx = "1.0.0"
 zxingAndroidEmbedded = "4.3.0"
 
 [libraries]
+androidsvg = { module = "com.caverock:androidsvg", version.ref = "androidsvg" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-palette-ktx = { module = "androidx.palette:palette-ktx", version.ref = "paletteKtx" }
 blurview = { module = "com.github.Dimezis:BlurView", version.ref = "blurview" }
 core = { module = "com.google.zxing:core", version.ref = "core" }
+floatingactionbutton = { module = "com.getbase:floatingactionbutton", version.ref = "floatingactionbutton" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

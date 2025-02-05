@@ -1,90 +1,513 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".view.activity.EditQrActivity">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="vn.dihaver.tech.bank.widget.viewmodel.EditQrViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
-        <com.google.android.material.card.MaterialCardView
+        tools:context=".view.activity.EditQrActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_preview"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_margin="16dp"
-            app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
-            app:cardCornerRadius="20dp"
-            app:strokeWidth="0.8dp"
-            app:layout_constraintWidth_min="50dp"
-            app:layout_constraintWidth_max="200dp"
-            app:layout_constraintHeight_min="50dp"
-            app:layout_constraintHeight_max="250dp"
-            app:layout_constraintDimensionRatio="3:4"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/container_edit"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_bias="0.4">
-            <LinearLayout
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="1">
+
+            <ImageView
+                android:id="@+id/image_background"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:scaleType="centerCrop"/>
+
+            <LinearLayout
+                android:id="@+id/support_status_bar"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/shape_gradient_support_status_bar"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/neutral_light_lightest"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/support_status_bar"
+                app:layout_constraintWidth_max="160dp"
+                app:layout_constraintWidth_min="100dp">
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="15dp">
+                    android:paddingBottom="5dp">
+
                     <ImageView
-                        android:id="@+id/image_icon"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/shape_oval_white"
-                        android:scaleType="fitCenter"/>
-                    <TextView
-                        android:id="@+id/text_title"
+                        android:id="@+id/image_logo_bank"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toEndOf="@+id/image_icon"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"
-                        android:maxLines="1"
-                        android:ellipsize="middle"
-                        android:text="NGUYEN VAN A"
-                        android:textSize="14sp"
-                        android:textColor="?attr/colorPrimary"
-                        android:textAllCaps="true"/>
-                    <TextView
-                        android:id="@+id/text_sub_title"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="30dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/logo_bank_tcb"/>
+
+                    <ImageView
+                        android:id="@+id/image_qr"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toEndOf="@+id/image_icon"
-                        android:layout_below="@+id/text_title"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"
-                        android:maxLines="1"
-                        android:ellipsize="middle"
-                        android:text="1111111111"
-                        android:textSize="15sp"
-                        android:textColor="?attr/colorOnSurface"/>
+                        android:layout_below="@+id/image_logo_bank"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/img_qr_sample" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/image_qr"
+                        android:gravity="bottom"
+                        android:orientation="horizontal"
+                        android:paddingStart="25dp"
+                        android:paddingEnd="25dp"
+                        android:paddingBottom="5dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="15dp"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/logo_vietqr" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="11dp"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/logo_napas" />
+                    </LinearLayout>
+
                 </RelativeLayout>
-                <ImageView
-                    android:id="@+id/image_qr"
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:id="@+id/button_change_ratio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_background_bottom_sheet_v1"
+                android:backgroundTint="@color/neutral_light_lightest"
+                android:elevation="10dp"
+                android:gravity="center"
+                android:padding="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <LinearLayout
+                    android:layout_width="50dp"
+                    android:layout_height="4dp"
+                    android:background="@drawable/shape_oval_surface_variant"
+                    android:backgroundTint="@color/neutral_dark_lightest" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/container_edit"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/container_preview"
+            app:layout_constraintWidth_percent="1">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/neutral_light_lightest"
+                app:tabIndicatorAnimationMode="linear"
+                app:tabIndicatorColor="@color/neutral_dark_darkest"
+                app:tabMode="fixed"
+                app:tabRippleColor="@null"
+                app:tabSelectedTextColor="@color/neutral_dark_darkest"
+                app:tabTextColor="@color/neutral_dark_light">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tài khoản" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chủ đề" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Màu sắc" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Logo" />
+            </com.google.android.material.tabs.TabLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerColor="@color/neutral_dark_lightest"
+                app:dividerThickness="0.4dp" />
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@android:color/white"
-                    android:contentDescription="@string/label_qr_photo"
-                    android:scaleType="fitCenter" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="1">
+                    android:orientation="vertical">
 
-    </LinearLayout>
-</LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"
+                        android:orientation="vertical"
+                        android:padding="20dp"
+                        android:visibility="@{viewModel.selectedTabIndex == 0 ? View.VISIBLE : View.GONE}">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/container_bank_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:cardBackgroundColor="@color/neutral_dark_darkest"
+                            app:cardElevation="4dp"
+                            app:strokeColor="@color/neutral_dark_darkest"
+                            app:strokeWidth="1dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:padding="10dp">
+
+                                    <ImageView
+                                        android:id="@+id/image_icon_bank"
+                                        android:layout_width="50dp"
+                                        android:layout_height="50dp"
+                                        android:background="@drawable/shape_oval_white"
+                                        android:padding="10dp"
+                                        android:src="@drawable/icon_bank_vcb" />
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="8dp"
+                                        android:layout_marginEnd="8dp"
+                                        android:layout_weight="1"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:id="@+id/text_title_bank"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:ellipsize="middle"
+                                            android:maxLines="2"
+                                            android:padding="2dp"
+                                            android:text="Techcombank"
+                                            android:textColor="@color/neutral_light_lightest"
+                                            android:textSize="18sp"
+                                            android:textStyle="bold" />
+
+                                        <TextView
+                                            android:id="@+id/text_subtitle_bank"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:ellipsize="middle"
+                                            android:maxLines="2"
+                                            android:padding="2dp"
+                                            android:text="NH TMCP Kỹ thương Việt Nam"
+                                            android:textColor="@color/neutral_light_light"
+                                            android:textSize="12sp" />
+                                    </LinearLayout>
+
+                                    <ImageView
+                                        android:layout_width="18dp"
+                                        android:layout_height="18dp"
+                                        android:src="@drawable/svg_solar_fill_verified_check"
+                                        app:tint="@color/neutral_light_lightest" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/neutral_light_lightest"
+                                    android:orientation="vertical"
+                                    android:padding="10dp">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ellipsize="middle"
+                                        android:maxLines="2"
+                                        android:paddingStart="10dp"
+                                        android:paddingEnd="10dp"
+                                        android:text="Số tài khoản"
+                                        android:textColor="@color/neutral_dark_darkest"
+                                        android:textSize="15sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/text_account_number"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="15dp"
+                                        android:ellipsize="middle"
+                                        android:maxLines="2"
+                                        android:paddingStart="10dp"
+                                        android:paddingTop="5dp"
+                                        android:paddingEnd="10dp"
+                                        android:paddingBottom="5dp"
+                                        android:text="1509889911"
+                                        android:textColor="@color/highlight_darkest"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ellipsize="middle"
+                                        android:maxLines="2"
+                                        android:paddingStart="10dp"
+                                        android:paddingEnd="10dp"
+                                        android:text="Tên chủ tài khoản"
+                                        android:textColor="@color/neutral_dark_darkest"
+                                        android:textSize="15sp"
+                                        android:textStyle="bold" />
+
+                                    <EditText
+                                        android:id="@+id/edit_text_acc_holder_name"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="15dp"
+                                        android:backgroundTint="@android:color/transparent"
+                                        android:hint="của bạn là?"
+                                        android:imeOptions="actionDone"
+                                        android:inputType="text"
+                                        android:maxLength="50"
+                                        android:maxLines="1"
+                                        android:paddingStart="10dp"
+                                        android:paddingTop="5dp"
+                                        android:paddingEnd="10dp"
+                                        android:paddingBottom="5dp"
+                                        android:textColor="@color/highlight_darkest"
+                                        android:textColorHint="@color/neutral_dark_lightest"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ellipsize="middle"
+                                        android:maxLines="2"
+                                        android:paddingStart="10dp"
+                                        android:paddingEnd="10dp"
+                                        android:text="Tên gợi nhớ"
+                                        android:textColor="@color/neutral_dark_darkest"
+                                        android:textSize="15sp"
+                                        android:textStyle="bold" />
+
+                                    <EditText
+                                        android:id="@+id/edit_text_alias"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="5dp"
+                                        android:backgroundTint="@android:color/transparent"
+                                        android:hint="của bạn muốn đặt là?"
+                                        android:imeOptions="actionDone"
+                                        android:inputType="text"
+                                        android:maxLength="50"
+                                        android:maxLines="1"
+                                        android:paddingStart="10dp"
+                                        android:paddingTop="5dp"
+                                        android:paddingEnd="10dp"
+                                        android:paddingBottom="5dp"
+                                        android:textColor="@color/highlight_darkest"
+                                        android:textColorHint="@color/neutral_dark_lightest"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="@{viewModel.selectedTabIndex == 1 ? View.VISIBLE : View.GONE}">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_theme"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:padding="20dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="@{viewModel.selectedTabIndex == 2 ? View.VISIBLE : View.GONE}">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_color"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:padding="20dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="10dp"
+                        android:visibility="@{viewModel.selectedTabIndex == 3 ? View.VISIBLE : View.GONE}">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/button_logo_empty"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_margin="10dp"
+                            app:cardBackgroundColor="@color/neutral_light_lightest"
+                            app:strokeColor="@color/neutral_light_darkest"
+                            app:cardCornerRadius="100dp"/>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/button_logo_normal"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_margin="10dp"
+                            app:cardBackgroundColor="@color/neutral_light_lightest"
+                            app:strokeColor="@color/neutral_light_darkest"
+                            app:cardCornerRadius="100dp">
+
+                            <ImageView
+                                android:id="@+id/image_logo_normal"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="10dp"
+                                android:src="@drawable/icon_bank_pvcb"/>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/button_logo_user_photo"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_margin="10dp"
+                            app:cardBackgroundColor="@color/neutral_light_lightest"
+                            app:strokeColor="@color/neutral_light_darkest"
+                            app:cardCornerRadius="100dp"
+                            android:visibility="@{!viewModel.isQrIconPathEmpty() ? View.VISIBLE : View.GONE}">
+
+                            <ImageView
+                                android:id="@+id/image_logo_user_photo"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"/>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/button_logo_add_photo"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_margin="10dp"
+                            app:cardBackgroundColor="@color/neutral_light_lightest"
+                            app:strokeColor="@color/neutral_light_darkest"
+                            app:cardCornerRadius="100dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="12dp"
+                                android:src="@drawable/svg_fonts_add_photo_alternate"
+                                app:tint="@color/neutral_dark_lightest"/>
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerColor="@color/neutral_dark_lightest"
+                app:dividerThickness="0.8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="15dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="10dp">
+
+                <Button
+                    android:id="@+id/button_back"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Quay lại"
+                    android:textColor="@color/neutral_dark_darkest"
+                    app:strokeColor="@color/neutral_dark_darkest" />
+
+                <Button
+                    android:id="@+id/button_save"
+                    style="@style/Widget.Material3.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="@color/neutral_dark_darkest"
+                    android:text="Lưu thay đổi"
+                    android:textColor="@color/neutral_light_lightest" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

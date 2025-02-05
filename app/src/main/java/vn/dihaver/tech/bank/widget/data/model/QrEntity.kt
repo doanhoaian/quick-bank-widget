@@ -1,29 +1,49 @@
 package vn.dihaver.tech.bank.widget.data.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class QrEntity(
     @SerializedName("id")
     val id: String,
 
-    @SerializedName("bank_name") // Tên pháp nhân ngân hàng (Ngân hàng TMCP Kỹ thương Việt Nam)
+    /** Trường Bank (Ngân hàng)
+     */
+    @SerializedName("bank_name")
     val bankName: String,
-    @SerializedName("bank_bin") // Mã BIN ngân hàng (970407)
+    @SerializedName("bank_bin")
     val bankBin: String,
-    @SerializedName("bank_code") // Tên mã ngân hàng (TCB)
+    @SerializedName("bank_code")
     val bankCode: String,
-    @SerializedName("bank_short_name") // Tên ngắn gọn thường gọi (Techcombank)
+    @SerializedName("bank_short_name")
     val bankShortName: String,
-    @SerializedName("bank_logo") // Đường dẫn đến logo ngân hàng
-    val bankLogo: String,
-    @SerializedName("bank_logo_full") // Đường dẫn đến logo ngân hàng đầy đủ
-    val bankLogoFull: String,
+    @SerializedName("bank_icon_res")
+    val bankIconRes: String,
+    @SerializedName("bank_logo_res")
+    val bankLogoRes: String,
 
-    @SerializedName("account_number") // Số tài khoản ngân hàng
-    val accountNumber: String,
-    @SerializedName("account_name") // Tên chủ tài khoản ngân hàng
-    val accountName: String,
+    /** Trường Account (Tài khoản)
+     */
+    @SerializedName("acc_number")
+    val accNumber: String,
+    @SerializedName("acc_name")
+    var accHolderName: String,
+    @SerializedName("acc_alias")
+    var accAlias: String,
 
-    @SerializedName("qr_data") // Dữ liệu QR dạng chuỗi
-    val qrData: String,
-)
+    /** Trường QR (Quick response)
+     */
+    @SerializedName("qr_content")
+    val qrContent: String,
+
+    /** Trường Custom (Tuỳ chỉnh)
+     */
+    @SerializedName("cus_qr_color")
+    var cusQrColor: String,
+    @SerializedName("cus_qr_icon_path")
+    var cusQrIconPath: String,
+    @SerializedName("cus_theme_path")
+    var cusThemePath: String
+) : Parcelable

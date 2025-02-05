@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="vn.dihaver.tech.bank.widget.viewmodel.CreateQrViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/material_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/neutral_light_lightest"
+            app:navigationIcon="@drawable/svg_fonts_arrow_back"
+            app:navigationIconTint="@color/neutral_dark_medium" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="Bạn muốn tạo QR cho"
+            android:textColor="@color/neutral_dark_darkest"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="20dp">
+
+            <LinearLayout
+                android:id="@+id/linear_image_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_oval_stroke_white"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/image_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/svg_fonts_fill_account_balance" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/edit_text_bank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/linear_image_icon"
+                android:backgroundTint="@android:color/transparent"
+                android:drawableEnd="@drawable/svg_alt_search"
+                android:drawableTint="@color/neutral_dark_light"
+                android:hint="ngân hàng nào?"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLength="50"
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:textColor="@color/neutral_dark_dark"
+                android:textColorHint="@color/neutral_dark_lightest"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="@{viewModel.isBankBinEmpty() ? View.VISIBLE : View.GONE}" />
+
+            <EditText
+                android:id="@+id/edit_text_account_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_bank"
+                android:layout_toEndOf="@+id/linear_image_icon"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="số tài khoản?"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:maxLength="50"
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:textColor="@color/neutral_dark_dark"
+                android:textColorHint="@color/neutral_dark_lightest"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="@{!viewModel.isBankBinEmpty() ? View.VISIBLE : View.GONE}" />
+
+            <EditText
+                android:id="@+id/edit_text_account_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_text_account_number"
+                android:layout_toEndOf="@+id/linear_image_icon"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="tên chủ tài khoản?"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLength="50"
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:textColor="@color/neutral_dark_dark"
+                android:textColorHint="@color/neutral_dark_lightest"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="@{!viewModel.isBankAccountNumberEmpty() ? View.VISIBLE : View.GONE}" />
+
+            <TextView
+                android:id="@+id/text_bank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/linear_image_icon"
+                android:ellipsize="middle"
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="@string/label_textview"
+                android:textColor="@color/highlight_darkest"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="@{!viewModel.isBankBinEmpty() ? View.VISIBLE : View.GONE}" />
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_bank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.isBankBinEmpty() ? View.VISIBLE : View.GONE}" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="10dp"
+            android:gravity="bottom"
+            android:visibility="@{!viewModel.isQrDataEmpty() ? View.VISIBLE : View.GONE}">
+
+            <Button
+                android:id="@+id/button_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/neutral_dark_darkest"
+                android:text="Tiếp tục"
+                android:textColor="@color/neutral_light_lightest"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>
