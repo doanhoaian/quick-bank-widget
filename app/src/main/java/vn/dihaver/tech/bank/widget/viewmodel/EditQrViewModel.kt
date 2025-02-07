@@ -2,18 +2,16 @@ package vn.dihaver.tech.bank.widget.viewmodel
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import vn.dihaver.tech.bank.widget.data.model.QrEntity
-import vn.dihaver.tech.bank.widget.utils.BitmapUtils
 import vn.dihaver.tech.bank.widget.utils.FormatUtils.removeDiacritics
 import vn.dihaver.tech.bank.widget.utils.FormatUtils.removeExtraSpaces
 import vn.dihaver.tech.bank.widget.utils.QrUtils
 
-class EditQrViewModel: ViewModel() {
+class EditQrViewModel : ViewModel() {
 
     private val _qrEntity = MutableLiveData<QrEntity>()
     val qrEntity: LiveData<QrEntity> = _qrEntity
@@ -29,7 +27,8 @@ class EditQrViewModel: ViewModel() {
 
     fun getQrEntity(): QrEntity? {
         return _qrEntity.value?.copy(
-            accHolderName = _accHolderName.value!!.removeDiacritics().removeExtraSpaces().uppercase(),
+            accHolderName = _accHolderName.value!!.removeDiacritics().removeExtraSpaces()
+                .uppercase(),
             accAlias = _accAlias.value!!,
             cusQrColor = _cusQrColor.value!!,
             cusQrIconPath = _cusQrIconPath.value!!,
@@ -43,13 +42,12 @@ class EditQrViewModel: ViewModel() {
     val qrBitmap: LiveData<Bitmap> = _qrBitmap
 
     fun updateQrBitmap(context: Context, qrContent: String, cusQrColor: String, cusQrIconPath: String) {
-        val qrBitmap = QrUtils.generateQrBitmap(qrContent, Color.parseColor(cusQrColor), Color.WHITE)
-        if (!cusQrIconPath.contains("bg_not_have")) {
-            val iconBitmap = BitmapUtils.getBitmapFromPath(context, cusQrIconPath)
-            QrUtils.addLogoToQr(qrBitmap!!, iconBitmap, if (cusQrIconPath.startsWith("res://")) 4 else 0)
-        }
-
-        _qrBitmap.value = qrBitmap
+        _qrBitmap.value = QrUtils.createQrBitmap(
+            context = context,
+            qrContent = qrContent,
+            cusQrColor = cusQrColor,
+            cusQrIconPath = cusQrIconPath
+        )
     }
 
     /**

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="vn.dihaver.tech.bank.widget.viewmodel.CreateWidgetViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".view.activity.SettingsActivity">
+
+        <LinearLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:background="@color/neutral_light_medium">
+
+            <ImageView
+                android:id="@+id/button_back"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="12dp"
+                android:src="@drawable/svg_fonts_arrow_back"
+                app:tint="@color/neutral_dark_darkest" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="Tạo Widget"
+                android:textColor="@color/neutral_dark_darkest"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/button_question"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="12dp"
+                android:src="@drawable/svg_solar_question_circle"
+                app:tint="@color/neutral_dark_darkest" />
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/neutral_light_medium">
+
+            <LinearLayout
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="20dp"
+                    android:paddingTop="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="10dp"
+                    android:text="Tiện ích đã thêm"
+                    android:textColor="@color/neutral_dark_dark"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:visibility="@{!viewModel.isWidgetListEmpty() ? View.VISIBLE : View.GONE}" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:visibility="@{!viewModel.isWidgetListEmpty() ? View.VISIBLE : View.GONE}"
+                    app:cardBackgroundColor="@color/neutral_light_lightest"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_widget"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="20dp"
+                    android:paddingTop="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="10dp"
+                    android:text="Tất cả tiện ích"
+                    android:textColor="@color/neutral_dark_dark"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="vertical">
+
+                    <include
+                        android:id="@+id/include_wg_s1"
+                        layout="@layout/widget_qr_simple_small"
+                        android:layout_width="134dp"
+                        android:layout_height="134dp" />
+
+                    <!--                    <com.google.android.material.card.MaterialCardView-->
+                    <!--                        android:layout_width="134dp"-->
+                    <!--                        android:layout_height="134dp"-->
+                    <!--                        android:layout_margin="5dp"-->
+                    <!--                        android:backgroundTint="@color/neutral_light_lightest"-->
+                    <!--                        app:cardCornerRadius="10dp"-->
+                    <!--                        app:cardElevation="2dp"-->
+                    <!--                        app:strokeColor="@color/neutral_light_darkest"-->
+                    <!--                        app:strokeWidth="1dp">-->
+
+                    <!--                        <ImageView-->
+                    <!--                            android:id="@+id/image_s1_qr"-->
+                    <!--                            android:layout_width="match_parent"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:padding="10dp"-->
+                    <!--                            android:src="@drawable/img_qr_sample" />-->
+                    <!--                    </com.google.android.material.card.MaterialCardView>-->
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="QR đơn giản (2x2)"
+                        android:textColor="@color/neutral_dark_medium"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="134dp"
+                        android:layout_height="134dp"
+                        android:layout_margin="5dp"
+                        android:backgroundTint="@color/neutral_light_lightest"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="2dp"
+                        app:strokeColor="@color/neutral_light_darkest"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/image_s2_logo"
+                                android:layout_width="match_parent"
+                                android:layout_height="26.8dp"
+                                android:src="@drawable/logo_bank_vcb" />
+
+                            <ImageView
+                                android:id="@+id/image_s2_qr"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginBottom="10dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/img_qr_sample" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="QR logo (2x2)"
+                        android:textColor="@color/neutral_dark_medium"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="268dp"
+                        android:layout_height="134dp"
+                        android:layout_margin="5dp"
+                        android:backgroundTint="@color/neutral_light_lightest"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="2dp"
+                        app:strokeColor="@color/neutral_light_darkest"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:padding="10dp">
+
+                                <ImageView
+                                    android:id="@+id/image_s3_logo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:adjustViewBounds="true"
+                                    android:src="@drawable/logo_bank_vcb" />
+
+                                <TextView
+                                    android:id="@+id/text_s3_acc_holder_name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:ellipsize="middle"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="@string/label_textview"
+                                    android:textColor="@color/neutral_dark_darkest"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/text_s3_acc_number"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:ellipsize="middle"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="@string/label_textview"
+                                    android:textColor="@color/highlight_darkest"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/image_s3_qr"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:padding="10dp"
+                                android:src="@drawable/img_qr_sample" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="QR đầy đủ (4x2)"
+                        android:textColor="@color/neutral_dark_medium"
+                        android:textSize="11sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

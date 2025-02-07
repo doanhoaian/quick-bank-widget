@@ -1,39 +1,37 @@
 [versions]
 agp = "8.7.3"
+activity = "1.10.0"
 androidsvg = "1.4"
-blurview = "version-2.0.6"
+appcompat = "1.7.0"
+constraintlayout = "2.2.0"
 core = "3.5.3"
+coreKtx = "1.15.0"
+espressoCore = "3.6.1"
 floatingactionbutton = "1.10.1"
 glide = "4.16.0"
 gson = "2.11.0"
-kotlin = "1.9.0"
-coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
-espressoCore = "3.6.1"
-appcompat = "1.7.0"
+kotlin = "1.9.0"
 material = "1.12.0"
-activity = "1.10.0"
-constraintlayout = "2.2.0"
 paletteKtx = "1.0.0"
 zxingAndroidEmbedded = "4.3.0"
 
 [libraries]
 androidsvg = { module = "com.caverock:androidsvg", version.ref = "androidsvg" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-palette-ktx = { module = "androidx.palette:palette-ktx", version.ref = "paletteKtx" }
-blurview = { module = "com.github.Dimezis:BlurView", version.ref = "blurview" }
 core = { module = "com.google.zxing:core", version.ref = "core" }
 floatingactionbutton = { module = "com.getbase:floatingactionbutton", version.ref = "floatingactionbutton" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
-androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 zxing-android-embedded = { module = "com.journeyapps:zxing-android-embedded", version.ref = "zxingAndroidEmbedded" }
 
 [plugins]

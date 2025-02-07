@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import vn.dihaver.tech.bank.widget.data.model.QrEntity
-import vn.dihaver.tech.bank.widget.utils.QrStorage
+import vn.dihaver.tech.bank.widget.data.storage.QrStorage
 
 class MainViewModel : ViewModel() {
 

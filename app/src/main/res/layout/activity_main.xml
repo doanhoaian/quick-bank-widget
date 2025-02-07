@@ -30,13 +30,14 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
+                android:importantForAccessibility="no"
                 android:src="@drawable/ic_empty_add" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Chưa có QR nào"
+                android:text="@string/message_qr_empty"
                 android:textColor="@color/neutral_dark_darkest"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -45,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Nhấn vào + để thêm QR nhận tiền cho bạn."
+                android:text="@string/message_guide_add_qr"
                 android:textColor="@color/neutral_dark_medium"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -59,6 +60,7 @@
                 android:id="@+id/image_background"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:importantForAccessibility="no"
                 android:scaleType="centerCrop" />
 
             <androidx.core.widget.NestedScrollView
@@ -71,10 +73,10 @@
                     android:id="@+id/content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@null"
                     android:clipToPadding="false"
                     android:paddingTop="50dp"
-                    android:paddingBottom="100dp"
-                    android:background="@null">
+                    android:paddingBottom="100dp">
 
                     <TextView
                         android:id="@+id/text_guide"
@@ -82,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="middle"
                         android:maxLines="1"
-                        android:text="Quét QR để chuyển tiền đến"
+                        android:text="@string/message_scan_to_transfer"
                         android:textColor="@color/neutral_dark_medium"
                         android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -151,8 +153,6 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="40dp"
                         android:layout_marginBottom="20dp"
-                        app:strokeColor="@color/neutral_light_dark"
-                        app:strokeWidth="0dp"
                         app:cardBackgroundColor="@color/neutral_light_lightest"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="10dp"
@@ -160,7 +160,9 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/text_account_number"
                         app:layout_constraintWidth_max="240dp"
-                        app:layout_constraintWidth_min="160dp">
+                        app:layout_constraintWidth_min="160dp"
+                        app:strokeColor="@color/neutral_light_dark"
+                        app:strokeWidth="0dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -171,6 +173,7 @@
                                 android:id="@+id/image_logo_bank"
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
+                                android:contentDescription="@string/label_bank_logo"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/logo_bank_vcb" />
 
@@ -183,6 +186,7 @@
                                 android:layout_marginEnd="28dp"
                                 android:layout_marginBottom="10dp"
                                 android:adjustViewBounds="true"
+                                android:contentDescription="@string/label_qr_code"
                                 android:src="@drawable/img_qr_sample" />
 
                             <LinearLayout
@@ -200,6 +204,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="18dp"
                                     android:adjustViewBounds="true"
+                                    android:importantForAccessibility="no"
                                     android:src="@drawable/logo_vietqr" />
 
                                 <View
@@ -211,6 +216,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="14dp"
                                     android:adjustViewBounds="true"
+                                    android:importantForAccessibility="no"
                                     android:src="@drawable/logo_napas" />
                             </LinearLayout>
 
@@ -227,8 +233,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="5dp"
                                     android:layout_marginBottom="4dp"
+                                    android:importantForAccessibility="no"
                                     android:src="@drawable/doted_dash"
-                                    app:tint="@color/neutral_light_medium" />
+                                    app:tint="@color/neutral_light_medium"
+                                    tools:ignore="ImageContrastCheck" />
 
                                 <TextView
                                     android:id="@+id/button_add_money"
@@ -237,7 +245,7 @@
                                     android:drawablePadding="2dp"
                                     android:gravity="center"
                                     android:padding="4dp"
-                                    android:text="Thêm số tiền"
+                                    android:text="@string/action_add_amount"
                                     android:textColor="@color/neutral_dark_medium"
                                     android:textSize="12sp"
                                     android:textStyle="bold"
@@ -292,29 +300,38 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_alignParentStart="true"
+                    android:contentDescription="@string/action_open_menu"
                     android:padding="12dp"
                     android:src="@drawable/svg_solar_menu_dots_circle"
+                    android:tooltipText="@string/action_open_menu"
                     android:visibility="@{!viewModel.isQrListEmpty() ? View.VISIBLE : View.GONE}"
-                    app:tint="@color/neutral_dark_medium" />
+                    app:tint="@color/neutral_dark_medium"
+                    tools:targetApi="o" />
 
                 <ImageView
                     android:id="@+id/button_edit_qr"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_toStartOf="@+id/button_settings"
+                    android:contentDescription="@string/action_edit"
                     android:padding="13dp"
                     android:src="@drawable/svg_solar_pen_2"
+                    android:tooltipText="@string/action_edit"
                     android:visibility="@{!viewModel.isQrListEmpty() ? View.VISIBLE : View.GONE}"
-                    app:tint="@color/neutral_dark_dark" />
+                    app:tint="@color/neutral_dark_dark"
+                    tools:targetApi="o" />
 
                 <ImageView
                     android:id="@+id/button_settings"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_alignParentEnd="true"
+                    android:contentDescription="@string/action_settings"
                     android:padding="13dp"
                     android:src="@drawable/svg_solar_settings"
-                    app:tint="@color/neutral_dark_dark" />
+                    android:tooltipText="@string/action_settings"
+                    app:tint="@color/neutral_dark_dark"
+                    tools:targetApi="o" />
             </RelativeLayout>
 
             <LinearLayout
@@ -331,7 +348,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    tools:ignore="UselessLeaf" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -345,10 +363,12 @@
                         android:layout_height="60dp"
                         android:layout_margin="5dp"
                         android:background="@drawable/shape_oval_stroke_white"
+                        android:contentDescription="@string/action_create_widget"
                         android:elevation="2dp"
-                        android:padding="12dp"
-                        android:src="@drawable/svg_fonts_widgets"
-                        app:tint="@color/neutral_dark_dark" />
+                        android:padding="14dp"
+                        android:src="@drawable/svg_solar_widget_add"
+                        android:tooltipText="@string/action_create_widget"
+                        tools:targetApi="o" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -363,10 +383,13 @@
                         android:layout_height="55dp"
                         android:layout_margin="5dp"
                         android:background="@drawable/shape_oval_stroke_white"
+                        android:contentDescription="@string/action_change_profile"
                         android:elevation="2dp"
                         android:padding="10dp"
                         android:src="@drawable/svg_fonts_qr_code_2"
-                        app:tint="@color/neutral_dark_dark" />
+                        android:tooltipText="@string/action_change_profile"
+                        app:tint="@color/neutral_dark_dark"
+                        tools:targetApi="o" />
 
                     <TextView
                         android:id="@+id/text_count_profile"
@@ -381,12 +404,12 @@
                         android:paddingTop="2dp"
                         android:paddingEnd="8dp"
                         android:paddingBottom="2dp"
-                        android:text="1"
+                        android:text="@string/label_textview"
                         android:textColor="@color/neutral_light_lightest"
                         android:textSize="10sp"
                         android:textStyle="bold"
                         android:translationZ="2dp"
-                        tools:ignore="SmallSp" />
+                        tools:ignore="SmallSp,TextContrastCheck,VisualLintOverlap" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -398,12 +421,13 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="8dp"
+                android:contentDescription="@string/action_add_qr"
                 app:fab_addButtonColorNormal="@color/highlight_darkest"
                 app:fab_addButtonColorPressed="@color/highlight_dark"
                 app:fab_addButtonPlusIconColor="@color/neutral_light_lightest"
                 app:fab_labelStyle="@style/menu_labels_style"
                 app:fab_labelsPosition="right"
-                tools:ignore="RelativeOverlap">
+                tools:ignore="RelativeOverlap,SpeakableTextPresentCheck">
 
                 <com.getbase.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab_button_add_image"

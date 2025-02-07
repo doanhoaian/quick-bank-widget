@@ -1,5 +1,6 @@
 package vn.dihaver.tech.bank.widget.utils
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -14,27 +15,45 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.BinaryBitmap
 import com.google.zxing.DecodeHintType
+import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatReader
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.RGBLuminanceSource
 import com.google.zxing.WriterException
 import com.google.zxing.common.HybridBinarizer
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 
 object QrUtils {
 
     private const val QR_SIZE = 400
     private const val LOGO_SIZE_RATIO = 6
-    private const val LOGO_BORDER_SIZE = 2 // Độ dày viền logo
+    private const val LOGO_BORDER_SIZE = 2
+
+    fun createQrBitmap(context: Context, qrContent: String, cusQrColor: String, cusQrIconPath: String): Bitmap? {
+        val hasLogo = !cusQrIconPath.contains("bg_not_have")
+        val errorCorrectionLevel = if (hasLogo) ErrorCorrectionLevel.Q else ErrorCorrectionLevel.L
+
+        val qrBitmap = generateQrBitmap(qrContent, Color.parseColor(cusQrColor), errorCorrectionLevel)
+
+        if (hasLogo) {
+            val iconBitmap = BitmapUtils.getBitmapFromPath(context, cusQrIconPath)
+            addLogoToQr(qrBitmap!!, iconBitmap, if (cusQrIconPath.startsWith("res://")) 4 else 0)
+        }
+
+        return qrBitmap
+    }
 
     /**
      * Tạo QR bitmap
      * Hỗ trợ tạo QR full size
      * Hỗ trợ sửa nền trước & sau
      */
-    fun generateQrBitmap(data: String, colorForeground: Int, colorBackground: Int): Bitmap? {
+    private fun generateQrBitmap(data: String, colorForeground: Int, errorCorrectionLevel: ErrorCorrectionLevel): Bitmap? {
         return try {
-            val bitMatrix =
-                MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE, QR_SIZE, QR_SIZE)
+            val hints = mapOf(
+                EncodeHintType.ERROR_CORRECTION to errorCorrectionLevel
+            )
+            val bitMatrix = MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE, QR_SIZE, QR_SIZE, hints)
 
             var left = QR_SIZE
             var top = QR_SIZE
@@ -68,7 +87,7 @@ object QrUtils {
                             if (srcX in 0 until QR_SIZE && srcY in 0 until QR_SIZE && bitMatrix[srcX, srcY]) {
                                 colorForeground
                             } else {
-                                colorBackground
+                                Color.WHITE
                             }
                         setPixel(x, y, color)
                     }
@@ -80,10 +99,11 @@ object QrUtils {
         }
     }
 
+
     /**
      * Thêm logo (hình tròn, có viền trắng) vào giữa mã QR với tùy chọn padding cho logo.
      */
-    fun addLogoToQr(qrBitmap: Bitmap, logo: Bitmap?, padding: Int = 0): Bitmap {
+    private fun addLogoToQr(qrBitmap: Bitmap, logo: Bitmap?, padding: Int = 0): Bitmap {
         if (logo != null) {
             val croppedLogo = cropToSquare(logo)
             val logoSize = QR_SIZE / LOGO_SIZE_RATIO
@@ -102,7 +122,7 @@ object QrUtils {
      * Tạo logo hình tròn với viền trắng và padding.
      */
     private fun createCircularLogoWithBorder(logo: Bitmap, padding: Int): Bitmap {
-        val diameter = logo.width + 2 * LOGO_BORDER_SIZE + 2 * padding // Thêm padding vào kích thước
+        val diameter = logo.width + 2 * LOGO_BORDER_SIZE + 2 * padding
 
         val output = Bitmap.createBitmap(diameter, diameter, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(output)
@@ -131,31 +151,6 @@ object QrUtils {
         val xOffset = (bitmap.width - size) / 2
         val yOffset = (bitmap.height - size) / 2
         return Bitmap.createBitmap(bitmap, xOffset, yOffset, size, size)
-    }
-
-    /**
-     * Tạo logo hình tròn với viền trắng.
-     */
-    private fun createCircularLogoWithBorder(logo: Bitmap): Bitmap {
-        val diameter = logo.width + 2 * LOGO_BORDER_SIZE
-
-        val output = Bitmap.createBitmap(diameter, diameter, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(output)
-        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-
-        paint.color = Color.WHITE
-        canvas.drawCircle(diameter / 2f, diameter / 2f, diameter / 2f, paint)
-
-        val circularLogo = cropToCircle(logo)
-        val rect = Rect(
-            LOGO_BORDER_SIZE,
-            LOGO_BORDER_SIZE,
-            diameter - LOGO_BORDER_SIZE,
-            diameter - LOGO_BORDER_SIZE
-        )
-        canvas.drawBitmap(circularLogo, null, rect, null)
-
-        return output
     }
 
     /**

@@ -1,11 +1,25 @@
 <resources>
+    <string name="action_add_amount">Thêm số tiền</string>
+    <string name="action_add_qr">Thêm QR</string>
+    <string name="action_change_profile">Thay đổi hồ sơ</string>
+    <string name="action_create_widget">Tạo Widget</string>
+    <string name="action_edit">Chỉnh sửa</string>
+    <string name="action_open_menu">Mở Menu</string>
+    <string name="action_settings">Cài đặt</string>
+
     <string name="app_name">QuickBank Widget</string>
-    <string name="action_settings">Settings</string>
-    <string name="label_qr_photo">QR Photo</string>
-    <string name="action_add_qr_code">Add QR Code</string>
-    <string name="action_scanner">Scanner</string>
-    <string name="label_image">Image</string>
-    <string name="label_textview">TextView</string>
-    <string name="message_error_try_again">Đã xảy ra lỗi, vui lòng thử lại</string>
+
+    <string name="appwidget_text">EXAMPLE</string>
+
     <string name="info_help_mail">help.dihaver@gmail.com</string>
+
+    <string name="label_bank_logo">Logo ngân hàng</string>
+    <string name="label_image">Image</string>
+    <string name="label_qr_code">Mã QR</string>
+    <string name="label_textview">TextView</string>
+
+    <string name="message_error_try_again">Đã xảy ra lỗi, vui lòng thử lại</string>
+    <string name="message_guide_add_qr">Nhấn vào + để thêm QR nhận tiền cho bạn.</string>
+    <string name="message_qr_empty">Chưa có QR nào</string>
+    <string name="message_scan_to_transfer">Quét QR để chuyển tiền đến</string>
 </resources>

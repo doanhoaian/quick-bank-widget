@@ -1,10 +1,8 @@
 package vn.dihaver.tech.bank.widget.view.activity
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,7 +21,8 @@ import vn.dihaver.tech.bank.widget.utils.FormatUtils.formatMoneyDong
 import vn.dihaver.tech.bank.widget.utils.ImageUtils
 import vn.dihaver.tech.bank.widget.utils.IntentUtils.getParcelableSafe
 import vn.dihaver.tech.bank.widget.utils.QrProcess
-import vn.dihaver.tech.bank.widget.utils.QrStorage
+import vn.dihaver.tech.bank.widget.data.storage.QrStorage
+import vn.dihaver.tech.bank.widget.utils.ImagePickerHelper
 import vn.dihaver.tech.bank.widget.utils.QrUtils
 import vn.dihaver.tech.bank.widget.utils.SystemUtils.translucentSystemBars
 import vn.dihaver.tech.bank.widget.view.bottomsheet.AddMoneyBottomSheet
@@ -44,66 +43,8 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
 
     private lateinit var qrStorage: QrStorage
+    private lateinit var imagePickerHelper: ImagePickerHelper
 
-    private val moreQrBottomSheet: MoreQrBottomSheet by lazy {
-        MoreQrBottomSheet(this, object : MoreQrBottomSheet.MoreQrBottomSheetListener {
-            override fun onWidget() {
-
-            }
-
-            override fun onShare() {
-                handlerTakeScreenShot(false)
-            }
-
-            override fun onDownload() {
-                handlerTakeScreenShot(true)
-            }
-
-            override fun onDelete() {
-                viewModel.getQrEntityCurrent()?.let {
-                    if (viewModel.deleteQrEntity(it.id, qrStorage)) {
-                        val qrList = qrStorage.getAllQr()
-                        if (qrList.isNotEmpty()) {
-                            viewModel.updateQrEntityCurrent(qrList[qrList.size - 1])
-                        }
-                        snackbar.setText("Đã xóa QR: ${it.accHolderName} - ${it.accNumber}").show()
-                    }
-                }
-            }
-        })
-    }
-
-    private val selectQrBottomSheet: SelectQrBottomSheet by lazy {
-        SelectQrBottomSheet(this, viewModel) { item ->
-            if (item.id != viewModel.qrEntityCurrent.value!!.id) {
-                viewModel.updateQrEntityCurrent(item)
-            }
-        }
-    }
-
-    private val addMoneyBottomSheet: AddMoneyBottomSheet by lazy {
-        AddMoneyBottomSheet(
-            this,
-            viewModel,
-            object : AddMoneyBottomSheet.AddMoneyBottomSheetListener {
-                @SuppressLint("UseCompatLoadingForDrawables")
-                override fun onSuccess(
-                    qrContent: String,
-                    qrEntity: QrEntity,
-                    money: Long,
-                    content: String
-                ) {
-                    createQrBitmap(qrContent, qrEntity.cusQrColor, qrEntity.cusQrIconPath)
-                    formatTextMoney(money, content)
-                }
-
-                @SuppressLint("UseCompatLoadingForDrawables")
-                override fun onError(qrEntity: QrEntity) {
-                    createQrBitmap(qrEntity.qrContent, qrEntity.cusQrColor, qrEntity.cusQrIconPath)
-                    formatTextMoney(0, "")
-                }
-            })
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,6 +83,28 @@ class MainActivity : AppCompatActivity() {
                 viewModel.updateQrEntityCurrent(listQr[listQr.size - 1])
             }
         }
+
+        imagePickerHelper = ImagePickerHelper(activity = this, allowMultiple = false) { uris ->
+            val uri = uris.firstOrNull()
+            uri?.let {
+                QrUtils.decodeQrFromImage(it, this) { qrResult ->
+                    if (qrResult == null) {
+                        showDialogErrorInputQr()
+                        return@decodeQrFromImage
+                    }
+
+                    if (!QrProcess.isQrBank(qrResult)) {
+                        showDialogErrorInputQr()
+                        return@decodeQrFromImage
+                    }
+
+                    val intent = Intent(this, EditQrActivity::class.java).apply {
+                        putExtra("qr_content", qrResult)
+                    }
+                    editQrLauncher.launch(intent)
+                }
+            }
+        }
     }
 
     private fun initView() {
@@ -176,6 +139,10 @@ class MainActivity : AppCompatActivity() {
             selectQrBottomSheet.show()
         }
 
+        binding.buttonCreateWidget.setOnClickListener {
+            openCreateWidget()
+        }
+
         binding.containerEmpty.setOnClickListener {
             if (!binding.fabExpandMenuButton.isExpanded) {
                 binding.fabExpandMenuButton.expand()
@@ -185,7 +152,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.fabButtonAddImage.setOnClickListener {
-            imagePickerLauncher.launch("image/*")
+            imagePickerHelper.pickImages()
             binding.fabExpandMenuButton.collapse()
         }
 
@@ -230,7 +197,14 @@ class MainActivity : AppCompatActivity() {
 
             /** Bitmap
              */
-            createQrBitmap(qrEntity.qrContent, qrEntity.cusQrColor, qrEntity.cusQrIconPath)
+            binding.imageQr.setImageBitmap(
+                QrUtils.createQrBitmap(
+                    context = this,
+                    qrContent = qrEntity.qrContent,
+                    cusQrColor = qrEntity.cusQrColor,
+                    cusQrIconPath = qrEntity.cusQrIconPath
+                )
+            )
 
             binding.imageBackground.setImageBitmap(
                 BitmapUtils.getBitmapFromPath(
@@ -246,6 +220,121 @@ class MainActivity : AppCompatActivity() {
             )
 
         }
+    }
+
+
+    /** Activity Result
+     */
+    private val editQrLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                result.data?.let {
+                    handlerQrEntityResult(
+                        it.getIntExtra("code", -1),
+                        it.getParcelableSafe<QrEntity>("qr_entity")
+                    )
+                }
+            }
+        }
+
+    private val scanQrLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                result.data?.let {
+                    handlerQrEntityResult(
+                        it.getIntExtra("code", -1),
+                        it.getParcelableSafe<QrEntity>("qr_entity")
+                    )
+                }
+            }
+        }
+
+    private val createQrLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                result.data?.let {
+                    handlerQrEntityResult(
+                        it.getIntExtra("code", -1),
+                        it.getParcelableSafe<QrEntity>("qr_entity")
+                    )
+                }
+            }
+        }
+
+    /** BottomSheet
+     */
+    private val moreQrBottomSheet: MoreQrBottomSheet by lazy {
+        MoreQrBottomSheet(this, object : MoreQrBottomSheet.MoreQrBottomSheetListener {
+            override fun onWidget() {
+                openCreateWidget()
+            }
+
+            override fun onShare() {
+                handlerTakeScreenShot(false)
+            }
+
+            override fun onDownload() {
+                handlerTakeScreenShot(true)
+            }
+
+            override fun onDelete() {
+                viewModel.getQrEntityCurrent()?.let {
+                    if (viewModel.deleteQrEntity(it.id, qrStorage)) {
+                        val qrList = qrStorage.getAllQr()
+                        if (qrList.isNotEmpty()) {
+                            viewModel.updateQrEntityCurrent(qrList[qrList.size - 1])
+                        }
+                        snackbar.setText("Đã xóa QR: ${it.bankShortName} - ${it.accNumber}").show()
+                    }
+                }
+            }
+        })
+    }
+
+    private val selectQrBottomSheet: SelectQrBottomSheet by lazy {
+        SelectQrBottomSheet(this, viewModel) { item ->
+            if (item.id != viewModel.qrEntityCurrent.value!!.id) {
+                viewModel.updateQrEntityCurrent(item)
+            }
+        }
+    }
+
+    private val addMoneyBottomSheet: AddMoneyBottomSheet by lazy {
+        AddMoneyBottomSheet(
+            this,
+            viewModel,
+            object : AddMoneyBottomSheet.AddMoneyBottomSheetListener {
+                @SuppressLint("UseCompatLoadingForDrawables")
+                override fun onSuccess(
+                    qrContent: String,
+                    qrEntity: QrEntity,
+                    money: Long,
+                    content: String
+                ) {
+                    binding.imageQr.setImageBitmap(
+                        QrUtils.createQrBitmap(
+                            context = this@MainActivity,
+                            qrContent = qrContent,
+                            cusQrColor = qrEntity.cusQrColor,
+                            cusQrIconPath = qrEntity.cusQrIconPath
+                        )
+                    )
+                    formatTextMoney(money, content)
+                }
+
+                @SuppressLint("UseCompatLoadingForDrawables")
+                override fun onError(qrEntity: QrEntity) {
+                    binding.imageQr.setImageBitmap(
+                        QrUtils.createQrBitmap(
+                            context = this@MainActivity,
+                            qrContent = qrEntity.qrContent,
+                            cusQrColor = qrEntity.cusQrColor,
+                            cusQrIconPath = qrEntity.cusQrIconPath
+                        )
+                    )
+                    formatTextMoney(0, "")
+                }
+            })
     }
 
     /** Dialog
@@ -293,68 +382,15 @@ class MainActivity : AppCompatActivity() {
 //        view.layoutParams = params
     }
 
-    /** Activity Result
-     */
-    private val imagePickerLauncher =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            uri?.let {
-                QrUtils.decodeQrFromImage(it, this) { qrResult ->
-                    if (qrResult == null) {
-                        showDialogErrorInputQr()
-                        return@decodeQrFromImage
-                    }
-
-                    if (!QrProcess.isQrBank(qrResult)) {
-                        showDialogErrorInputQr()
-                        return@decodeQrFromImage
-                    }
-
-                    val intent = Intent(this, EditQrActivity::class.java).apply {
-                        putExtra("qr_content", qrResult)
-                    }
-                    editQrLauncher.launch(intent)
-                }
-            }
-        }
-
-    private val editQrLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                result.data?.let {
-                    handlerQrEntityResult(
-                        it.getIntExtra("code", -1),
-                        it.getParcelableSafe<QrEntity>("qr_entity")
-                    )
-                }
-            }
-        }
-
-    private val scanQrLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                result.data?.let {
-                    handlerQrEntityResult(
-                        it.getIntExtra("code", -1),
-                        it.getParcelableSafe<QrEntity>("qr_entity")
-                    )
-                }
-            }
-        }
-
-    private val createQrLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                result.data?.let {
-                    handlerQrEntityResult(
-                        it.getIntExtra("code", -1),
-                        it.getParcelableSafe<QrEntity>("qr_entity")
-                    )
-                }
-            }
-        }
-
     /** Function
      */
+    private fun openCreateWidget() {
+        val intent = Intent(this, CreateWidgetActivity::class.java).apply {
+            putExtra("qr_entity", viewModel.getQrEntityCurrent())
+        }
+        startActivity(intent)
+    }
+
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun formatTextMoney(money: Long, content: String) {
         binding.buttonAddMoney.apply {
@@ -377,23 +413,6 @@ class MainActivity : AppCompatActivity() {
             visibility = if (content.isNotEmpty()) View.VISIBLE else View.GONE
             text = content
         }
-    }
-
-    private fun createQrBitmap(qrContent: String, cusQrColor: String, cusQrIconPath: String) {
-        val qrBitmap = QrUtils.generateQrBitmap(
-            qrContent,
-            Color.parseColor(cusQrColor),
-            Color.WHITE
-        )
-        if (!cusQrIconPath.contains("bg_not_have")) {
-            val iconBitmap = BitmapUtils.getBitmapFromPath(this, cusQrIconPath)
-            QrUtils.addLogoToQr(
-                qrBitmap!!,
-                iconBitmap,
-                if (cusQrIconPath.startsWith("res://")) 4 else 0
-            )
-        }
-        binding.imageQr.setImageBitmap(qrBitmap)
     }
 
     private fun handlerQrEntityResult(code: Int?, qrEntity: QrEntity?) {
@@ -421,6 +440,11 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun handlerTakeScreenShot(isSave: Boolean) {
         viewModel.getQrEntityCurrent()?.cusThemePath?.let { pathBG ->
+            val bitmapBG =
+                BitmapUtils.getBitmapFromPath(this, pathBG) ?: BitmapUtils.getBitmapFromResource(
+                    this,
+                    "bg_not_have"
+                )
             val isAddMoneyEmpty = binding.buttonAddMoney.text.contains("Thêm số tiền")
             val isBankContentNotEmpty = binding.textBankContent.text.isNotEmpty()
             binding.containerQr.strokeWidth = 1.dpToPixel(this@MainActivity)
@@ -436,9 +460,9 @@ class MainActivity : AppCompatActivity() {
             }
             binding.containerQr.post {
                 ImageUtils.takeScreenshot(
-                    this@MainActivity,
-                    binding.content,
-                    BitmapUtils.getBitmapFromPath(this@MainActivity, pathBG),
+                    context = this@MainActivity,
+                    view = binding.content,
+                    bitmapBG = bitmapBG,
                     isSave = isSave
                 )
                 binding.containerQr.strokeWidth = 0

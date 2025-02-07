@@ -11,7 +11,6 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -27,6 +26,7 @@ import vn.dihaver.tech.bank.widget.databinding.ActivityEditQrBinding
 import vn.dihaver.tech.bank.widget.utils.BitmapUtils
 import vn.dihaver.tech.bank.widget.utils.CalculateUtils
 import vn.dihaver.tech.bank.widget.utils.FormatUtils.formatAccNumber
+import vn.dihaver.tech.bank.widget.utils.ImagePickerHelper
 import vn.dihaver.tech.bank.widget.utils.ImageUtils
 import vn.dihaver.tech.bank.widget.utils.IntentUtils.getParcelableSafe
 import vn.dihaver.tech.bank.widget.utils.QrProcess
@@ -42,6 +42,7 @@ class EditQrActivity : AppCompatActivity() {
 
     private val viewModel: EditQrViewModel by viewModels()
 
+    private lateinit var imagePickerHelper: ImagePickerHelper
     private lateinit var themeAdapter: ThemeAdapter
     private lateinit var colorAdapter: ColorAdapter
 
@@ -53,6 +54,7 @@ class EditQrActivity : AppCompatActivity() {
     private var initialHeightEdit = 0
     private var initialHeightPreview = 0
     private var initialTouchY = 0
+
     /**
      */
 
@@ -85,6 +87,17 @@ class EditQrActivity : AppCompatActivity() {
 
     private fun initComponent() {
 
+        imagePickerHelper = ImagePickerHelper(activity = this, allowMultiple = false) { uris ->
+            val uri = uris.firstOrNull()
+            uri?.let {
+                ImageUtils.saveImageToAppStorage(this, uri, 5)?.let {
+                    binding.buttonLogoUserPhoto.strokeColor =
+                        getColor(R.color.neutral_light_darkest)
+                    viewModel.updateQrIconPath(it)
+                }
+            }
+        }
+
         /** Adapter Color
          */
         val colors = listOf(
@@ -114,11 +127,58 @@ class EditQrActivity : AppCompatActivity() {
          */
         val themes = listOf(
             ThemeEntity("bg_not_have", "Không có", R.drawable.bg_not_have),
+
             ThemeEntity("bg_plain_yellow", "Vàng trơn", R.drawable.bg_plain_yellow),
             ThemeEntity("bg_plain_green", "Xanh lục trơn", R.drawable.bg_plain_green),
             ThemeEntity("bg_plain_blue", "Xanh dương trơn", R.drawable.bg_plain_blue),
             ThemeEntity("bg_plain_pink", "Hồng trơn", R.drawable.bg_plain_pink),
-            ThemeEntity("bg_plain_brown", "Nâu trơn", R.drawable.bg_plain_brown)
+            ThemeEntity("bg_plain_brown", "Nâu trơn", R.drawable.bg_plain_brown),
+
+            ThemeEntity("bg_rect_line_yellow", "Vàng đường thẳng", R.drawable.bg_rect_line_yellow),
+            ThemeEntity(
+                "bg_rect_line_green",
+                "Xanh lục đường thẳng",
+                R.drawable.bg_rect_line_green
+            ),
+            ThemeEntity(
+                "bg_rect_line_blue",
+                "Xanh dương đường thẳng",
+                R.drawable.bg_rect_line_blue
+            ),
+            ThemeEntity("bg_rect_line_pink", "Hồng đường thẳng", R.drawable.bg_rect_line_pink),
+            ThemeEntity("bg_rect_line_brown", "Nâu đường thẳng", R.drawable.bg_rect_line_brown),
+
+            ThemeEntity(
+                "bg_contour_line_yellow",
+                "Vàng đường đồng mức",
+                R.drawable.bg_contour_line_yellow
+            ),
+            ThemeEntity(
+                "bg_contour_line_green",
+                "Xanh lục đường đồng mức",
+                R.drawable.bg_contour_line_green
+            ),
+            ThemeEntity(
+                "bg_contour_line_blue",
+                "Xanh dương đường đồng mức",
+                R.drawable.bg_contour_line_blue
+            ),
+            ThemeEntity(
+                "bg_contour_line_pink",
+                "Hồng đường đồng mức",
+                R.drawable.bg_contour_line_pink
+            ),
+            ThemeEntity(
+                "bg_contour_line_brown",
+                "Nâu đường đồng mức",
+                R.drawable.bg_contour_line_brown
+            ),
+
+            ThemeEntity("bg_hexagon_yellow", "Vàng lục giác", R.drawable.bg_hexagon_yellow),
+            ThemeEntity("bg_hexagon_green", "Xanh lục lục giác", R.drawable.bg_hexagon_green),
+            ThemeEntity("bg_hexagon_blue", "Xanh dương lục giác", R.drawable.bg_hexagon_blue),
+            ThemeEntity("bg_hexagon_pink", "Hồng lục giác", R.drawable.bg_hexagon_pink),
+            ThemeEntity("bg_hexagon_brown", "Nâu lục giác", R.drawable.bg_hexagon_brown)
         )
         themeAdapter = ThemeAdapter(this, themes) { path: String ->
             viewModel.updateCusThemePath(path)
@@ -197,12 +257,22 @@ class EditQrActivity : AppCompatActivity() {
         })
 
         binding.buttonLogoEmpty.setOnClickListener {
-            viewModel.updateCusQrIconPath(BitmapUtils.convertNameToPath("bg_not_have", BitmapUtils.PathType.RES))
+            viewModel.updateCusQrIconPath(
+                BitmapUtils.convertNameToPath(
+                    "bg_not_have",
+                    BitmapUtils.PathType.RES
+                )
+            )
         }
 
         binding.buttonLogoNormal.setOnClickListener {
             viewModel.qrEntity.value?.bankIconRes?.let {
-                viewModel.updateCusQrIconPath(BitmapUtils.convertNameToPath(it, BitmapUtils.PathType.RES))
+                viewModel.updateCusQrIconPath(
+                    BitmapUtils.convertNameToPath(
+                        it,
+                        BitmapUtils.PathType.RES
+                    )
+                )
             }
         }
 
@@ -213,7 +283,7 @@ class EditQrActivity : AppCompatActivity() {
         }
 
         binding.buttonLogoAddPhoto.setOnClickListener {
-            imagePickerLauncher.launch("image/*")
+            imagePickerHelper.pickImages()
         }
 
         binding.buttonBack.setOnClickListener {
@@ -266,7 +336,11 @@ class EditQrActivity : AppCompatActivity() {
             }
 
             else -> {
-                Toast.makeText(this, getString(R.string.message_error_try_again), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    getString(R.string.message_error_try_again),
+                    Toast.LENGTH_SHORT
+                ).show()
                 finish()
             }
         }
@@ -335,11 +409,26 @@ class EditQrActivity : AppCompatActivity() {
             )
             val (emptyColor, normalColor, userPhotoColor) = when {
                 qrEntity.cusQrIconPath.contains("bg_not_have") ->
-                    Triple(R.color.highlight_darkest, R.color.neutral_light_darkest, R.color.neutral_light_darkest)
+                    Triple(
+                        R.color.highlight_darkest,
+                        R.color.neutral_light_darkest,
+                        R.color.neutral_light_darkest
+                    )
+
                 qrEntity.cusQrIconPath.startsWith("res://") ->
-                    Triple(R.color.neutral_light_darkest, R.color.highlight_darkest, R.color.neutral_light_darkest)
+                    Triple(
+                        R.color.neutral_light_darkest,
+                        R.color.highlight_darkest,
+                        R.color.neutral_light_darkest
+                    )
+
                 qrEntity.cusQrIconPath.contains("/Android/data/") ->
-                    Triple(R.color.neutral_light_darkest, R.color.neutral_light_darkest, R.color.highlight_darkest)
+                    Triple(
+                        R.color.neutral_light_darkest,
+                        R.color.neutral_light_darkest,
+                        R.color.highlight_darkest
+                    )
+
                 else -> return@observe
             }
             binding.buttonLogoEmpty.strokeColor = getColor(emptyColor)
@@ -377,15 +466,7 @@ class EditQrActivity : AppCompatActivity() {
 
     /** Activity Result
      */
-    private val imagePickerLauncher =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            uri?.let {
-                ImageUtils.saveImageToAppStorage(this, uri, 5)?.let {
-                    binding.buttonLogoUserPhoto.strokeColor = getColor(R.color.neutral_light_darkest)
-                    viewModel.updateQrIconPath(it)
-                }
-            }
-        }
+
 
     /**
      * Loại bỏ Focus EditText khi nhấn vào vị trí bất kì

@@ -5,7 +5,9 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -47,8 +49,8 @@ class ScanQrActivity : AppCompatActivity() {
         binding.viewModel = viewModel
 
         setupInsets()
-        checkCameraPermission()
         initView()
+        checkCameraPermission()
         observeViewModel()
     }
 
@@ -86,12 +88,13 @@ class ScanQrActivity : AppCompatActivity() {
     }
 
     private fun startCamera() {
-        barcodeView = binding.cameraPreview
-        barcodeView.setStatusText("")
         barcodeView.decodeContinuous(callback)
     }
 
     private fun initView() {
+
+        barcodeView = binding.cameraPreview
+        barcodeView.setStatusText("")
 
         /** Listener View
          */
@@ -130,7 +133,13 @@ class ScanQrActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle("Quyền camera bị từ chối")
             .setMessage("Bạn cần cấp quyền camera để quét mã QR.")
-            .setPositiveButton("OK") { _, _ -> finish() }
+            .setPositiveButton("Mở cài đặt") { _, _ ->
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.fromParts("package", packageName, null)
+                }
+                startActivity(intent)
+            }
+            .setNegativeButton("Hủy") { _, _ -> finish() }
             .show()
     }
 

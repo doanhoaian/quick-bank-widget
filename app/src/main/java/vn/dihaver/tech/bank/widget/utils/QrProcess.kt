@@ -1,7 +1,6 @@
 package vn.dihaver.tech.bank.widget.utils
 
 import vn.dihaver.tech.bank.widget.data.model.QrEntity
-import java.util.UUID
 
 object QrProcess {
 
@@ -16,7 +15,7 @@ object QrProcess {
         val newQrContent = BankBinVN.generateQrCode(bankBin, accNumber, accHolderName)
 
         return QrEntity(
-            id = generateId(),
+            id = SystemUtils.generateId(),
             bankName = bankName,
             bankBin = bankBin,
             bankShortName = bankShortName,
@@ -41,9 +40,5 @@ object QrProcess {
         // Không chứa số tài khoản -- ERROR
         Regex("${bankInfoResult.first}01\\d{2}(.*?)0208").find(qrData)?.groups?.get(1)?.value ?: return false
         return true
-    }
-
-    private fun generateId(): String {
-        return UUID.randomUUID().toString()
     }
 }

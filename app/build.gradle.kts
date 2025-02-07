@@ -51,7 +51,6 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.palette.ktx)
-    implementation(libs.blurview)
     implementation(libs.core)
     implementation(libs.floatingactionbutton)
     implementation(libs.glide)

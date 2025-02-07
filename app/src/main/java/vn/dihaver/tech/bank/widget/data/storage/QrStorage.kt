@@ -1,4 +1,4 @@
-package vn.dihaver.tech.bank.widget.utils
+package vn.dihaver.tech.bank.widget.data.storage
 
 import android.content.Context
 import android.util.Log
@@ -10,12 +10,12 @@ class QrStorage(context: Context) {
 
     companion object {
         const val TAG = "QrStorage"
-        const val QR_STORAGE = "qr_storage"
+        const val TABLE = "qr_storage"
         const val QR_LIST = "qr_list"
-        const val ID_QR_CURRENT = "id_qr_current"
+        const val QR_ID_CURRENT = "id_qr_current"
     }
 
-    private val sharedPreferences = context.applicationContext.getSharedPreferences(QR_STORAGE, Context.MODE_PRIVATE)
+    private val sharedPreferences = context.applicationContext.getSharedPreferences(TABLE, Context.MODE_PRIVATE)
     private val gson = Gson()
     private val qrListType = object : TypeToken<List<QrEntity>>() {}.type
 
@@ -77,15 +77,11 @@ class QrStorage(context: Context) {
     }
 
     fun getQrCurrent(): QrEntity? {
-        val id = sharedPreferences.getString(ID_QR_CURRENT, "")!!
+        val id = sharedPreferences.getString(QR_ID_CURRENT, "")!!
         if (id.isNotEmpty()) {
             return getQrById(id)
         }
         return null
-    }
-
-    fun updateIdQrCurrent(id: String) {
-        sharedPreferences.edit().putString(ID_QR_CURRENT, id).apply()
     }
 
     fun getQrById(id: String): QrEntity? {
@@ -118,6 +114,11 @@ class QrStorage(context: Context) {
         }
     }
 
+    fun updateIdQrCurrent(id: String) {
+        sharedPreferences.edit().putString(QR_ID_CURRENT, id).apply()
+    }
+
+    @Suppress("unused")
     fun updateQrOrder(newOrder: List<QrEntity>) {
         if (ensureCacheLoaded() != newOrder) {
             qrCache = newOrder.toMutableList()

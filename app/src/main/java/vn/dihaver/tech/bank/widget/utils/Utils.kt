@@ -10,6 +10,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -72,6 +73,10 @@ object SystemUtils {
             Toast.makeText(this, "Đã sao chép vào bộ nhớ tạm", Toast.LENGTH_SHORT).show()
         }
     }
+
+    fun generateId(): String {
+        return UUID.randomUUID().toString()
+    }
 }
 
 
@@ -103,10 +108,12 @@ object ImageUtils {
     private fun mergeBitmapFitTop(background: Bitmap, overlay: Bitmap): Bitmap {
         val resultBitmap = Bitmap.createBitmap(background.width, background.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(resultBitmap)
-        canvas.drawBitmap(background, 0f, 0f, null)
+        val srcRect = Rect(0, 0, background.width, background.height)
+        val destRect = Rect(0, 0, resultBitmap.width, resultBitmap.height)
+        canvas.drawBitmap(background, srcRect, destRect, null)
         val scale = background.width.toFloat() / overlay.width.toFloat()
-        val newHeight = (overlay.height * scale).toInt()
-        val scaledOverlay = Bitmap.createScaledBitmap(overlay, background.width, newHeight, true)
+        val scaledOverlayHeight = (overlay.height * scale).toInt()
+        val scaledOverlay = Bitmap.createScaledBitmap(overlay, background.width, scaledOverlayHeight, true)
         canvas.drawBitmap(scaledOverlay, 0f, 0f, null)
         return resultBitmap
     }
