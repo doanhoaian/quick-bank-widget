@@ -33,7 +33,7 @@
                 android:id="@+id/image_background"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:id="@+id/support_status_bar"
@@ -70,7 +70,7 @@
                         android:layout_marginStart="30dp"
                         android:layout_marginEnd="30dp"
                         android:adjustViewBounds="true"
-                        android:src="@drawable/logo_bank_tcb"/>
+                        android:src="@drawable/logo_bank_tcb" />
 
                     <ImageView
                         android:id="@+id/image_qr"
@@ -167,17 +167,12 @@
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="Mã QR" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="Chủ đề" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Màu sắc" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Logo" />
             </com.google.android.material.tabs.TabLayout>
 
             <com.google.android.material.divider.MaterialDivider
@@ -381,12 +376,245 @@
                         android:orientation="vertical"
                         android:visibility="@{viewModel.selectedTabIndex == 1 ? View.VISIBLE : View.GONE}">
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recycler_theme"
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:nestedScrollingEnabled="false"/>
+                            android:paddingStart="20dp"
+                            android:paddingTop="20dp"
+                            android:paddingEnd="20dp"
+                            android:paddingBottom="10dp"
+                            android:text="Màu sắc"
+                            android:textColor="@color/neutral_dark_darkest"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:id="@+id/button_cus_color_body"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingStart="20dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="20dp"
+                            android:paddingBottom="10dp">
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/card_cus_color_body"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                app:cardBackgroundColor="@color/neutral_light_lightest"
+                                app:cardCornerRadius="100dp"
+                                app:cardElevation="0dp"
+                                app:strokeColor="@color/neutral_light_darkest" />
+
+                            <TextView
+                                android:id="@+id/text_cus_color_body"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="Thân"
+                                android:textColor="@color/neutral_dark_darkest"
+                                android:textSize="16.5sp"
+                                app:drawableEndCompat="@drawable/svg_solar_alt_arrow_right"
+                                app:drawableTint="@color/neutral_dark_medium" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/button_cus_color_eye_frame"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingStart="20dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="20dp"
+                            android:paddingBottom="10dp">
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/card_cus_color_eye_frame"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                app:cardBackgroundColor="@color/neutral_light_lightest"
+                                app:cardCornerRadius="100dp"
+                                app:cardElevation="0dp"
+                                app:strokeColor="@color/neutral_light_darkest" />
+
+                            <TextView
+                                android:id="@+id/text_cus_color_eye_frame"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="Mắt ngoài"
+                                android:textColor="@color/neutral_dark_darkest"
+                                android:textSize="16.5sp"
+                                app:drawableEndCompat="@drawable/svg_solar_alt_arrow_right"
+                                app:drawableTint="@color/neutral_dark_medium" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/button_cus_color_eye_ball"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingStart="20dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="20dp"
+                            android:paddingBottom="10dp">
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/card_cus_color_eye_ball"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                app:cardBackgroundColor="@color/neutral_light_lightest"
+                                app:cardCornerRadius="100dp"
+                                app:cardElevation="0dp"
+                                app:strokeColor="@color/neutral_light_darkest" />
+
+                            <TextView
+                                android:id="@+id/text_cus_color_eye_ball"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="Mắt trong"
+                                android:textColor="@color/neutral_dark_darkest"
+                                android:textSize="16.5sp"
+                                app:drawableEndCompat="@drawable/svg_solar_alt_arrow_right"
+                                app:drawableTint="@color/neutral_dark_medium" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="20dp"
+                            android:paddingTop="20dp"
+                            android:paddingEnd="20dp"
+                            android:text="Hình dạng Thân"
+                            android:textColor="@color/neutral_dark_darkest"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_shape_body"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:padding="20dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="20dp"
+                            android:paddingTop="20dp"
+                            android:paddingEnd="20dp"
+                            android:text="Hìng dạng Mắt ngoài"
+                            android:textColor="@color/neutral_dark_darkest"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_shape_eye_frame"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:padding="20dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="20dp"
+                            android:paddingTop="20dp"
+                            android:paddingEnd="20dp"
+                            android:text="Hình dạng Mắt trong"
+                            android:textColor="@color/neutral_dark_darkest"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_shape_eye_ball"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:padding="20dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="20dp"
+                            android:paddingTop="20dp"
+                            android:paddingEnd="20dp"
+                            android:text="Logo"
+                            android:textColor="@color/neutral_dark_darkest"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/button_logo_empty"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_margin="10dp"
+                                app:cardBackgroundColor="@color/neutral_light_lightest"
+                                app:cardCornerRadius="100dp"
+                                app:strokeColor="@color/neutral_light_darkest" />
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/button_logo_normal"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_margin="10dp"
+                                app:cardBackgroundColor="@color/neutral_light_lightest"
+                                app:cardCornerRadius="100dp"
+                                app:strokeColor="@color/neutral_light_darkest">
+
+                                <ImageView
+                                    android:id="@+id/image_logo_normal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:padding="10dp"
+                                    android:src="@drawable/icon_bank_pvcb" />
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/button_logo_user_photo"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_margin="10dp"
+                                android:visibility="@{!viewModel.isQrIconPathEmpty() ? View.VISIBLE : View.GONE}"
+                                app:cardBackgroundColor="@color/neutral_light_lightest"
+                                app:cardCornerRadius="100dp"
+                                app:strokeColor="@color/neutral_light_darkest">
+
+                                <ImageView
+                                    android:id="@+id/image_logo_user_photo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:scaleType="centerCrop" />
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/button_logo_add_photo"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_margin="10dp"
+                                app:cardBackgroundColor="@color/neutral_light_lightest"
+                                app:cardCornerRadius="100dp"
+                                app:strokeColor="@color/neutral_light_darkest">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:padding="12dp"
+                                    android:src="@drawable/svg_fonts_add_photo_alternate"
+                                    app:tint="@color/neutral_dark_lightest" />
+                            </com.google.android.material.card.MaterialCardView>
+                        </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -396,79 +624,11 @@
                         android:visibility="@{viewModel.selectedTabIndex == 2 ? View.VISIBLE : View.GONE}">
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recycler_color"
+                            android:id="@+id/recycler_theme"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:nestedScrollingEnabled="false"
-                            android:padding="20dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="10dp"
-                        android:visibility="@{viewModel.selectedTabIndex == 3 ? View.VISIBLE : View.GONE}">
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/button_logo_empty"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_margin="10dp"
-                            app:cardBackgroundColor="@color/neutral_light_lightest"
-                            app:strokeColor="@color/neutral_light_darkest"
-                            app:cardCornerRadius="100dp"/>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/button_logo_normal"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_margin="10dp"
-                            app:cardBackgroundColor="@color/neutral_light_lightest"
-                            app:strokeColor="@color/neutral_light_darkest"
-                            app:cardCornerRadius="100dp">
-
-                            <ImageView
-                                android:id="@+id/image_logo_normal"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:padding="10dp"
-                                android:src="@drawable/icon_bank_pvcb"/>
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/button_logo_user_photo"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_margin="10dp"
-                            app:cardBackgroundColor="@color/neutral_light_lightest"
-                            app:strokeColor="@color/neutral_light_darkest"
-                            app:cardCornerRadius="100dp"
-                            android:visibility="@{!viewModel.isQrIconPathEmpty() ? View.VISIBLE : View.GONE}">
-
-                            <ImageView
-                                android:id="@+id/image_logo_user_photo"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerCrop"/>
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/button_logo_add_photo"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_margin="10dp"
-                            app:cardBackgroundColor="@color/neutral_light_lightest"
-                            app:strokeColor="@color/neutral_light_darkest"
-                            app:cardCornerRadius="100dp">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:padding="12dp"
-                                android:src="@drawable/svg_fonts_add_photo_alternate"
-                                app:tint="@color/neutral_dark_lightest"/>
-                        </com.google.android.material.card.MaterialCardView>
+                            android:padding="10dp" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>

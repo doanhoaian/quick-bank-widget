@@ -10,19 +10,21 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.github.alexzhirkevich.customqrgenerator.QrData
 import com.google.android.material.snackbar.Snackbar
 import vn.dihaver.tech.bank.widget.R
 import vn.dihaver.tech.bank.widget.data.model.QrEntity
+import vn.dihaver.tech.bank.widget.data.storage.QrStorage
 import vn.dihaver.tech.bank.widget.databinding.ActivityMainBinding
 import vn.dihaver.tech.bank.widget.utils.BitmapUtils
 import vn.dihaver.tech.bank.widget.utils.CalculateUtils.dpToPixel
 import vn.dihaver.tech.bank.widget.utils.FormatUtils.formatAccNumber
 import vn.dihaver.tech.bank.widget.utils.FormatUtils.formatMoneyDong
+import vn.dihaver.tech.bank.widget.utils.ImagePickerHelper
 import vn.dihaver.tech.bank.widget.utils.ImageUtils
 import vn.dihaver.tech.bank.widget.utils.IntentUtils.getParcelableSafe
+import vn.dihaver.tech.bank.widget.utils.QrCreator
 import vn.dihaver.tech.bank.widget.utils.QrProcess
-import vn.dihaver.tech.bank.widget.data.storage.QrStorage
-import vn.dihaver.tech.bank.widget.utils.ImagePickerHelper
 import vn.dihaver.tech.bank.widget.utils.QrUtils
 import vn.dihaver.tech.bank.widget.utils.SystemUtils.translucentSystemBars
 import vn.dihaver.tech.bank.widget.view.bottomsheet.AddMoneyBottomSheet
@@ -43,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
 
     private lateinit var qrStorage: QrStorage
+    private lateinit var qrCreator: QrCreator
     private lateinit var imagePickerHelper: ImagePickerHelper
 
 
@@ -72,7 +75,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun initComponent() {
 
-        qrStorage = QrStorage(this@MainActivity)
+        /** Init QrStorage
+         */
+        qrStorage = QrStorage(this)
         val listQr = qrStorage.getAllQr()
         viewModel.updateQrList(listQr)
 
@@ -84,6 +89,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        /** Init QrCreator
+         */
+        qrCreator = QrCreator(this)
+
+        /** Init ImagePickerHelper
+         */
         imagePickerHelper = ImagePickerHelper(activity = this, allowMultiple = false) { uris ->
             val uri = uris.firstOrNull()
             uri?.let {
@@ -177,45 +188,48 @@ class MainActivity : AppCompatActivity() {
             binding.textCountProfile.text = qrList.size.toString()
         }
 
-        viewModel.qrEntityCurrent.observe(this) { qrEntity ->
+        viewModel.qrEntityCurrent.observe(this) {
 
-            qrStorage.updateIdQrCurrent(qrEntity.id)
+            qrStorage.updateIdQrCurrent(it.id)
             /** Text
              */
-            if (qrEntity.accAlias.isNotEmpty()) {
+            if (it.accAlias.isNotEmpty()) {
                 binding.textAlias.apply {
                     visibility = View.VISIBLE
-                    text = qrEntity.accAlias
+                    text = it.accAlias
                 }
             } else {
                 binding.textAlias.visibility = View.GONE
             }
-            binding.textAccountName.text = qrEntity.accHolderName
-            binding.textAccountNumber.text = qrEntity.accNumber.formatAccNumber()
+            binding.textAccountName.text = it.accHolderName
+            binding.textAccountNumber.text = it.accNumber.formatAccNumber()
 
             formatTextMoney(0, "")
 
             /** Bitmap
              */
-            binding.imageQr.setImageBitmap(
-                QrUtils.createQrBitmap(
-                    context = this,
-                    qrContent = qrEntity.qrContent,
-                    cusQrColor = qrEntity.cusQrColor,
-                    cusQrIconPath = qrEntity.cusQrIconPath
-                )
-            )
+            val dataQr = QrData.Text(it.qrContent)
+            val drawableQr = qrCreator.createDrawable(dataQr, it.cusQrEntity)
+            binding.imageQr.setImageDrawable(drawableQr)
+//            binding.imageQr.setImageBitmap(
+//                QrUtils.createQrBitmap(
+//                    context = this,
+//                    qrContent = it.qrContent,
+//                    cusQrColor = it.cusQrColor,
+//                    cusQrIconPath = it.cusQrIconPath
+//                )
+//            )
 
             binding.imageBackground.setImageBitmap(
                 BitmapUtils.getBitmapFromPath(
                     this,
-                    qrEntity.cusThemePath
+                    it.cusThemePath
                 )
             )
             binding.imageLogoBank.setImageBitmap(
                 BitmapUtils.getBitmapFromResource(
                     this,
-                    qrEntity.bankLogoRes
+                    it.bankLogoRes
                 )
             )
 
@@ -311,27 +325,17 @@ class MainActivity : AppCompatActivity() {
                     money: Long,
                     content: String
                 ) {
-                    binding.imageQr.setImageBitmap(
-                        QrUtils.createQrBitmap(
-                            context = this@MainActivity,
-                            qrContent = qrContent,
-                            cusQrColor = qrEntity.cusQrColor,
-                            cusQrIconPath = qrEntity.cusQrIconPath
-                        )
-                    )
+                    val dataQr = QrData.Text(qrContent)
+                    val drawableQr = qrCreator.createDrawable(dataQr, qrEntity.cusQrEntity)
+                    binding.imageQr.setImageDrawable(drawableQr)
                     formatTextMoney(money, content)
                 }
 
                 @SuppressLint("UseCompatLoadingForDrawables")
                 override fun onError(qrEntity: QrEntity) {
-                    binding.imageQr.setImageBitmap(
-                        QrUtils.createQrBitmap(
-                            context = this@MainActivity,
-                            qrContent = qrEntity.qrContent,
-                            cusQrColor = qrEntity.cusQrColor,
-                            cusQrIconPath = qrEntity.cusQrIconPath
-                        )
-                    )
+                    val dataQr = QrData.Text(qrEntity.qrContent)
+                    val drawableQr = qrCreator.createDrawable(dataQr, qrEntity.cusQrEntity)
+                    binding.imageQr.setImageDrawable(drawableQr)
                     formatTextMoney(0, "")
                 }
             })

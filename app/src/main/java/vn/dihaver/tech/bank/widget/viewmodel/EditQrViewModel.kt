@@ -1,18 +1,18 @@
 package vn.dihaver.tech.bank.widget.viewmodel
 
-import android.content.Context
-import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
+import vn.dihaver.tech.bank.widget.data.model.CustomQrEntity
 import vn.dihaver.tech.bank.widget.data.model.QrEntity
 import vn.dihaver.tech.bank.widget.utils.FormatUtils.removeDiacritics
 import vn.dihaver.tech.bank.widget.utils.FormatUtils.removeExtraSpaces
-import vn.dihaver.tech.bank.widget.utils.QrUtils
 
 class EditQrViewModel : ViewModel() {
 
+    /** LiveData - QrEntity(main)
+     */
     private val _qrEntity = MutableLiveData<QrEntity>()
     val qrEntity: LiveData<QrEntity> = _qrEntity
 
@@ -20,39 +20,21 @@ class EditQrViewModel : ViewModel() {
         _qrEntity.value = qrEntity
         _accHolderName.value = qrEntity.accHolderName
         _accAlias.value = qrEntity.accAlias
-        _cusQrColor.value = qrEntity.cusQrColor
-        _cusQrIconPath.value = qrEntity.cusQrIconPath
+        _cusQrEntity.value = qrEntity.cusQrEntity
         _cusThemePath.value = qrEntity.cusThemePath
     }
 
     fun getQrEntity(): QrEntity? {
         return _qrEntity.value?.copy(
-            accHolderName = _accHolderName.value!!.removeDiacritics().removeExtraSpaces()
-                .uppercase(),
+            accHolderName = _accHolderName.value!!.removeDiacritics().removeExtraSpaces().uppercase(),
             accAlias = _accAlias.value!!,
-            cusQrColor = _cusQrColor.value!!,
-            cusQrIconPath = _cusQrIconPath.value!!,
+            cusQrEntity = _cusQrEntity.value!!,
             cusThemePath = _cusThemePath.value!!
         )
     }
 
-    /**
+    /** LiveData - Account Holder Name
      */
-    private val _qrBitmap = MutableLiveData<Bitmap>()
-    val qrBitmap: LiveData<Bitmap> = _qrBitmap
-
-    fun updateQrBitmap(context: Context, qrContent: String, cusQrColor: String, cusQrIconPath: String) {
-        _qrBitmap.value = QrUtils.createQrBitmap(
-            context = context,
-            qrContent = qrContent,
-            cusQrColor = cusQrColor,
-            cusQrIconPath = cusQrIconPath
-        )
-    }
-
-    /**
-     */
-
     private val _accHolderName = MutableLiveData<String>()
     val accHolderName: LiveData<String> = _accHolderName
 
@@ -60,9 +42,8 @@ class EditQrViewModel : ViewModel() {
         _accHolderName.value = string
     }
 
-    /**
+    /** LiveData - Account Alias
      */
-
     private val _accAlias = MutableLiveData<String>()
     val accAlias: LiveData<String> = _accAlias
 
@@ -70,29 +51,18 @@ class EditQrViewModel : ViewModel() {
         _accAlias.value = string
     }
 
-    /**
+    /** LiveData - Custom QrEntity
      */
+    private val _cusQrEntity = MutableLiveData<CustomQrEntity>()
+    val cusQrEntity: LiveData<CustomQrEntity> = _cusQrEntity
 
-    private val _cusQrColor = MutableLiveData<String>()
-    val cusQrColor: LiveData<String> = _cusQrColor
-
-    fun updateCusQrColor(color: String) {
-        _cusQrColor.value = color
+    fun updateCusQrEntity(update: (CustomQrEntity) -> CustomQrEntity) {
+        _cusQrEntity.value = _cusQrEntity.value?.let(update)
+        _qrEntity.value = _qrEntity.value?.copy(cusQrEntity = _cusQrEntity.value!!)
     }
 
-    /**
+    /** LiveData - Custom ThemePath
      */
-
-    private val _cusQrIconPath = MutableLiveData<String>()
-    val cusQrIconPath: LiveData<String> = _cusQrIconPath
-
-    fun updateCusQrIconPath(string: String) {
-        _cusQrIconPath.value = string
-    }
-
-    /**
-     */
-
     private val _cusThemePath = MutableLiveData<String>()
     val cusThemePath: LiveData<String> = _cusThemePath
 
@@ -100,9 +70,8 @@ class EditQrViewModel : ViewModel() {
         _cusThemePath.value = string
     }
 
-    /**
+    /** LiveData - Select Tab Index
      */
-
     private val _selectedTabIndex = MutableLiveData<Int>().apply { value = 0 }
     val selectedTabIndex: LiveData<Int> get() = _selectedTabIndex
 
@@ -110,7 +79,7 @@ class EditQrViewModel : ViewModel() {
         _selectedTabIndex.value = position
     }
 
-    /**
+    /** LiveData - Image QrLogo User Pick
      */
     private val _qrIconPath = MutableLiveData("")
     val qrIconPath: LiveData<String> = _qrIconPath

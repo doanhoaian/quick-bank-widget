@@ -26,8 +26,6 @@ object QrProcess {
             accHolderName = accHolderName,
             accAlias = "",
             qrContent = newQrContent,
-            cusQrColor = "#FF000000",
-            cusQrIconPath = BitmapUtils.convertNameToPath(BankBinVN.getBankIcon(bankCode), BitmapUtils.PathType.RES),
             cusThemePath = BitmapUtils.convertNameToPath("bg_not_have", BitmapUtils.PathType.RES),
         )
     }

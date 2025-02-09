@@ -53,12 +53,17 @@ class ColorAdapter(val context: Context, private val items: List<String>, privat
     }
 
     fun setColorSelect(color: String) {
-        val position = items.indexOf(color)
+        val item = items.find { it.contains(color) }
+        val position = items.indexOf(item)
         if (position != -1) {
             val previousPosition = selectedPosition
             selectedPosition = position
             notifyItemChanged(previousPosition)
             notifyItemChanged(selectedPosition)
+        } else {
+            val previousPosition = selectedPosition
+            selectedPosition = -1
+            notifyItemChanged(previousPosition)
         }
     }
 

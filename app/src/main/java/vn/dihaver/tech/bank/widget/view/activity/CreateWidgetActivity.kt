@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.alexzhirkevich.customqrgenerator.QrData
 import com.google.android.material.snackbar.Snackbar
 import vn.dihaver.tech.bank.widget.R
 import vn.dihaver.tech.bank.widget.data.model.QrEntity
@@ -22,7 +23,7 @@ import vn.dihaver.tech.bank.widget.databinding.ActivityCreateWidgetBinding
 import vn.dihaver.tech.bank.widget.utils.BitmapUtils
 import vn.dihaver.tech.bank.widget.utils.CalculateUtils.dpToPixel
 import vn.dihaver.tech.bank.widget.utils.IntentUtils.getParcelableSafe
-import vn.dihaver.tech.bank.widget.utils.QrUtils
+import vn.dihaver.tech.bank.widget.utils.QrCreator
 import vn.dihaver.tech.bank.widget.utils.SystemUtils
 import vn.dihaver.tech.bank.widget.view.adapter.WidgetAdapter
 import vn.dihaver.tech.bank.widget.viewmodel.CreateWidgetViewModel
@@ -35,6 +36,7 @@ class CreateWidgetActivity : AppCompatActivity() {
 
     private lateinit var widgetStorage: WidgetStorage
     private lateinit var widgetAdapter: WidgetAdapter
+    private lateinit var qrCreator: QrCreator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +70,10 @@ class CreateWidgetActivity : AppCompatActivity() {
         widgetStorage.getAll().let {
             viewModel.updateWidgetList(it)
         }
+
+        /** Init QrCreator
+         */
+        qrCreator = QrCreator(this)
 
         /** Init QrEntity Current
          */
@@ -139,8 +145,8 @@ class CreateWidgetActivity : AppCompatActivity() {
                 cusWgStyle = WidgetStyle.BASIC_2X2,
                 cusIsWgStroke = false,
                 cusWgStrokeColor = "#FF000000",
-                qrColor = qrEntity.cusQrColor,
-                qrIcon = qrEntity.cusQrIconPath,
+                qrColor = qrEntity.cusQrEntity.qrBodyDarkColor,
+                qrIcon = qrEntity.cusQrEntity.qrLogoPath,
                 qrContent = qrEntity.qrContent
             )
             val intent = Intent(this, EditWidgetActivity::class.java).apply {
@@ -153,16 +159,12 @@ class CreateWidgetActivity : AppCompatActivity() {
 
     private fun obverseViewModel() {
         viewModel.qrEntityCurrent.observe(this) {
-            val bitmapQr = QrUtils.createQrBitmap(
-                context = this,
-                qrContent = it.qrContent,
-                cusQrColor = it.cusQrColor,
-                cusQrIconPath = it.cusQrIconPath
-            )
+            val dataQr = QrData.Text(it.qrContent)
+            val drawableQr = qrCreator.createDrawable(dataQr, it.cusQrEntity)
 
-            binding.includeWgS1.imageQr.setImageBitmap(bitmapQr)
-            binding.imageS2Qr.setImageBitmap(bitmapQr)
-            binding.imageS3Qr.setImageBitmap(bitmapQr)
+            binding.includeWgS1.imageQr.setImageDrawable(drawableQr)
+            binding.imageS2Qr.setImageDrawable(drawableQr)
+            binding.imageS3Qr.setImageDrawable(drawableQr)
 
             val bitmapLogo = BitmapUtils.getBitmapFromResource(this, it.bankLogoRes)
             binding.imageS2Logo.setImageBitmap(bitmapLogo)

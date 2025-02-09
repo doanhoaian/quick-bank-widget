@@ -57,5 +57,6 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.material)
     implementation(libs.zxing.android.embedded)
+    implementation(libs.custom.qr.generator)
     testImplementation(libs.junit)
 }

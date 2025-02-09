@@ -2,6 +2,7 @@ package vn.dihaver.tech.bank.widget.view.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -17,11 +19,15 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.GridLayoutManager
+import com.github.alexzhirkevich.customqrgenerator.QrData
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import vn.dihaver.tech.bank.widget.R
+import vn.dihaver.tech.bank.widget.data.model.BodyShape
+import vn.dihaver.tech.bank.widget.data.model.EyeBallShape
+import vn.dihaver.tech.bank.widget.data.model.EyeFrameShape
 import vn.dihaver.tech.bank.widget.data.model.QrEntity
-import vn.dihaver.tech.bank.widget.data.model.ThemeEntity
 import vn.dihaver.tech.bank.widget.databinding.ActivityEditQrBinding
 import vn.dihaver.tech.bank.widget.utils.BitmapUtils
 import vn.dihaver.tech.bank.widget.utils.CalculateUtils
@@ -29,10 +35,13 @@ import vn.dihaver.tech.bank.widget.utils.FormatUtils.formatAccNumber
 import vn.dihaver.tech.bank.widget.utils.ImagePickerHelper
 import vn.dihaver.tech.bank.widget.utils.ImageUtils
 import vn.dihaver.tech.bank.widget.utils.IntentUtils.getParcelableSafe
+import vn.dihaver.tech.bank.widget.utils.QrCreator
+import vn.dihaver.tech.bank.widget.utils.QrCustomizationData
 import vn.dihaver.tech.bank.widget.utils.QrProcess
 import vn.dihaver.tech.bank.widget.utils.SystemUtils.translucentSystemBars
-import vn.dihaver.tech.bank.widget.view.adapter.ColorAdapter
+import vn.dihaver.tech.bank.widget.view.adapter.ShapeQrAdapter
 import vn.dihaver.tech.bank.widget.view.adapter.ThemeAdapter
+import vn.dihaver.tech.bank.widget.view.bottomsheet.SelectColorBottomSheet
 import vn.dihaver.tech.bank.widget.viewmodel.EditQrViewModel
 
 
@@ -42,9 +51,12 @@ class EditQrActivity : AppCompatActivity() {
 
     private val viewModel: EditQrViewModel by viewModels()
 
+    private lateinit var qrCreator: QrCreator
     private lateinit var imagePickerHelper: ImagePickerHelper
+    private lateinit var bodyShapeAdapter: ShapeQrAdapter
+    private lateinit var eyeFrameShapeAdapter: ShapeQrAdapter
+    private lateinit var eyeBallShapeAdapter: ShapeQrAdapter
     private lateinit var themeAdapter: ThemeAdapter
-    private lateinit var colorAdapter: ColorAdapter
 
     /** Thông số tùy chỉnh Ratio giữa Preview & Edit
      */
@@ -87,6 +99,12 @@ class EditQrActivity : AppCompatActivity() {
 
     private fun initComponent() {
 
+        /** Init QrCreator
+         */
+        qrCreator = QrCreator(this)
+
+        /** Init ImagePickerHelper
+         */
         imagePickerHelper = ImagePickerHelper(activity = this, allowMultiple = false) { uris ->
             val uri = uris.firstOrNull()
             uri?.let {
@@ -98,90 +116,29 @@ class EditQrActivity : AppCompatActivity() {
             }
         }
 
-        /** Adapter Color
+        /** Init AdapterTheme
          */
-        val colors = listOf(
-            "#FF000000",
-            "#FFC40002",
-            "#FFC04301",
-            "#FFC87C02",
-            "#FF00B30A",
-            "#FF00ACB6",
-            "#FF0039C8",
-            "#FF6400D7",
-            "#FFB100C0",
-            "#FF8E019B",
-            "#FF002B9B",
-            "#FF029199",
-            "#FF009909",
-            "#FF998002",
-            "#FF996102",
-            "#FF993503",
-            "#FF990100"
-        )
-        colorAdapter = ColorAdapter(this, colors) { color: String ->
-            viewModel.updateCusQrColor(color)
+        themeAdapter = ThemeAdapter(this, QrCustomizationData.themes) {
+            viewModel.updateCusThemePath(it)
         }
 
-        /** Adapter Theme
-         */
-        val themes = listOf(
-            ThemeEntity("bg_not_have", "Không có", R.drawable.bg_not_have),
+        /** Init AdapterShapeQr */
+        bodyShapeAdapter = ShapeQrAdapter(this, QrCustomizationData.bodyShapes) { item ->
+            viewModel.updateCusQrEntity {
+                it.copy(qrBodyDarkShape = item.bodyShape as BodyShape)
+            }
+        }
 
-            ThemeEntity("bg_plain_yellow", "Vàng trơn", R.drawable.bg_plain_yellow),
-            ThemeEntity("bg_plain_green", "Xanh lục trơn", R.drawable.bg_plain_green),
-            ThemeEntity("bg_plain_blue", "Xanh dương trơn", R.drawable.bg_plain_blue),
-            ThemeEntity("bg_plain_pink", "Hồng trơn", R.drawable.bg_plain_pink),
-            ThemeEntity("bg_plain_brown", "Nâu trơn", R.drawable.bg_plain_brown),
+        eyeFrameShapeAdapter = ShapeQrAdapter(this, QrCustomizationData.eyeFrameShapes) { item ->
+            viewModel.updateCusQrEntity {
+                it.copy(qrEyeFrameShape = item.eyeFrameShape as EyeFrameShape)
+            }
+        }
 
-            ThemeEntity("bg_rect_line_yellow", "Vàng đường thẳng", R.drawable.bg_rect_line_yellow),
-            ThemeEntity(
-                "bg_rect_line_green",
-                "Xanh lục đường thẳng",
-                R.drawable.bg_rect_line_green
-            ),
-            ThemeEntity(
-                "bg_rect_line_blue",
-                "Xanh dương đường thẳng",
-                R.drawable.bg_rect_line_blue
-            ),
-            ThemeEntity("bg_rect_line_pink", "Hồng đường thẳng", R.drawable.bg_rect_line_pink),
-            ThemeEntity("bg_rect_line_brown", "Nâu đường thẳng", R.drawable.bg_rect_line_brown),
-
-            ThemeEntity(
-                "bg_contour_line_yellow",
-                "Vàng đường đồng mức",
-                R.drawable.bg_contour_line_yellow
-            ),
-            ThemeEntity(
-                "bg_contour_line_green",
-                "Xanh lục đường đồng mức",
-                R.drawable.bg_contour_line_green
-            ),
-            ThemeEntity(
-                "bg_contour_line_blue",
-                "Xanh dương đường đồng mức",
-                R.drawable.bg_contour_line_blue
-            ),
-            ThemeEntity(
-                "bg_contour_line_pink",
-                "Hồng đường đồng mức",
-                R.drawable.bg_contour_line_pink
-            ),
-            ThemeEntity(
-                "bg_contour_line_brown",
-                "Nâu đường đồng mức",
-                R.drawable.bg_contour_line_brown
-            ),
-
-            ThemeEntity("bg_hexagon_yellow", "Vàng lục giác", R.drawable.bg_hexagon_yellow),
-            ThemeEntity("bg_hexagon_green", "Xanh lục lục giác", R.drawable.bg_hexagon_green),
-            ThemeEntity("bg_hexagon_blue", "Xanh dương lục giác", R.drawable.bg_hexagon_blue),
-            ThemeEntity("bg_hexagon_pink", "Hồng lục giác", R.drawable.bg_hexagon_pink),
-            ThemeEntity("bg_hexagon_brown", "Nâu lục giác", R.drawable.bg_hexagon_brown)
-        )
-        themeAdapter = ThemeAdapter(this, themes) { path: String ->
-            viewModel.updateCusThemePath(path)
+        eyeBallShapeAdapter = ShapeQrAdapter(this, QrCustomizationData.eyeBallShapes) { item ->
+            viewModel.updateCusQrEntity {
+                it.copy(qrEyeBallShape = item.eyeBallShape as EyeBallShape)
+            }
         }
     }
 
@@ -238,54 +195,6 @@ class EditQrActivity : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
-        binding.editTextAccHolderName.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                viewModel.updateAccHolderName(p0.toString())
-            }
-
-            override fun afterTextChanged(p0: Editable?) {}
-        })
-
-        binding.editTextAlias.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                viewModel.updateAccAlias(p0.toString())
-            }
-
-            override fun afterTextChanged(p0: Editable?) {}
-        })
-
-        binding.buttonLogoEmpty.setOnClickListener {
-            viewModel.updateCusQrIconPath(
-                BitmapUtils.convertNameToPath(
-                    "bg_not_have",
-                    BitmapUtils.PathType.RES
-                )
-            )
-        }
-
-        binding.buttonLogoNormal.setOnClickListener {
-            viewModel.qrEntity.value?.bankIconRes?.let {
-                viewModel.updateCusQrIconPath(
-                    BitmapUtils.convertNameToPath(
-                        it,
-                        BitmapUtils.PathType.RES
-                    )
-                )
-            }
-        }
-
-        binding.buttonLogoUserPhoto.setOnClickListener {
-            viewModel.qrIconPath.value?.let {
-                viewModel.updateCusQrIconPath(it)
-            }
-        }
-
-        binding.buttonLogoAddPhoto.setOnClickListener {
-            imagePickerHelper.pickImages()
-        }
-
         binding.buttonBack.setOnClickListener {
             finish()
         }
@@ -313,8 +222,73 @@ class EditQrActivity : AppCompatActivity() {
             }
         }
 
-        /**
+        /** Tab Account
          */
+        binding.editTextAccHolderName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                viewModel.updateAccHolderName(p0.toString())
+            }
+
+            override fun afterTextChanged(p0: Editable?) {}
+        })
+
+        binding.editTextAlias.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                viewModel.updateAccAlias(p0.toString())
+            }
+
+            override fun afterTextChanged(p0: Editable?) {}
+        })
+
+        /** Tab QR Code
+         */
+        binding.buttonCusColorBody.setOnClickListener {
+            showSelectColorBottomSheet(0, binding.textCusColorBody, binding.cardCusColorBody)
+        }
+
+        binding.buttonCusColorEyeFrame.setOnClickListener {
+            showSelectColorBottomSheet(
+                1,
+                binding.textCusColorEyeFrame,
+                binding.cardCusColorEyeFrame
+            )
+        }
+
+        binding.buttonCusColorEyeBall.setOnClickListener {
+            showSelectColorBottomSheet(2, binding.textCusColorEyeBall, binding.cardCusColorEyeBall)
+        }
+
+//        binding.buttonLogoEmpty.setOnClickListener {
+//            viewModel.updateCusQrIconPath(
+//                BitmapUtils.convertNameToPath(
+//                    "bg_not_have",
+//                    BitmapUtils.PathType.RES
+//                )
+//            )
+//        }
+//
+//        binding.buttonLogoNormal.setOnClickListener {
+//            viewModel.qrEntity.value?.bankIconRes?.let {
+//                viewModel.updateCusQrIconPath(
+//                    BitmapUtils.convertNameToPath(
+//                        it,
+//                        BitmapUtils.PathType.RES
+//                    )
+//                )
+//            }
+//        }
+//
+//        binding.buttonLogoUserPhoto.setOnClickListener {
+//            viewModel.qrIconPath.value?.let {
+//                viewModel.updateCusQrIconPath(it)
+//            }
+//        }
+
+        binding.buttonLogoAddPhoto.setOnClickListener {
+            imagePickerHelper.pickImages()
+        }
     }
 
     /**
@@ -348,19 +322,19 @@ class EditQrActivity : AppCompatActivity() {
 
     @SuppressLint("DiscouragedApi")
     private fun observeViewModel() {
-        viewModel.qrEntity.observe(this) { qrEntity ->
+        viewModel.qrEntity.observe(this) {
 
             binding.imageLogoBank.setImageBitmap(
                 BitmapUtils.getBitmapFromResource(
                     this,
-                    qrEntity.bankLogoRes
+                    it.bankLogoRes
                 )
             )
 
-            BitmapUtils.getBitmapFromResource(this, qrEntity.bankIconRes)?.let {
-                binding.imageIconBank.setImageBitmap(it)
-                binding.imageLogoNormal.setImageBitmap(it)
-                Palette.from(it).generate { palette ->
+            BitmapUtils.getBitmapFromResource(this, it.bankIconRes)?.let { bitmapBI ->
+                binding.imageIconBank.setImageBitmap(bitmapBI)
+                binding.imageLogoNormal.setImageBitmap(bitmapBI)
+                Palette.from(bitmapBI).generate { palette ->
                     palette?.let {
                         val color = palette.getVibrantColor(getColor(R.color.neutral_dark_darkest))
                         binding.containerBankInfo.apply {
@@ -371,101 +345,103 @@ class EditQrActivity : AppCompatActivity() {
                 }
             }
 
-            if (qrEntity.cusQrIconPath.contains("/Android/data/")) {
-                viewModel.updateQrIconPath(qrEntity.cusQrIconPath)
-            }
+            binding.textTitleBank.text = it.bankShortName
+            binding.textSubtitleBank.text = it.bankName
+            binding.textAccountNumber.text = it.accNumber.formatAccNumber()
+            binding.editTextAccHolderName.setText(it.accHolderName)
+            binding.editTextAlias.setText(it.accAlias)
 
-            binding.textTitleBank.text = qrEntity.bankShortName
-            binding.textSubtitleBank.text = qrEntity.bankName
-            binding.textAccountNumber.text = qrEntity.accNumber.formatAccNumber()
-            binding.editTextAccHolderName.setText(qrEntity.accHolderName)
-            binding.editTextAlias.setText(qrEntity.accAlias)
+            binding.cardCusColorBody.setCardBackgroundColor(Color.parseColor(it.cusQrEntity.qrBodyDarkColor))
+            binding.cardCusColorEyeFrame.setCardBackgroundColor(Color.parseColor(it.cusQrEntity.qrEyeFrameColor))
+            binding.cardCusColorEyeBall.setCardBackgroundColor(Color.parseColor(it.cusQrEntity.qrEyeBallColor))
 
-            themeAdapter.setThemeSelect(qrEntity.cusThemePath)
-            colorAdapter.setColorSelect(qrEntity.cusQrColor)
+            bodyShapeAdapter.setShapeQrSelect(it.cusQrEntity.qrBodyDarkShape)
+            eyeFrameShapeAdapter.setShapeQrSelect(it.cusQrEntity.qrEyeFrameShape)
+            eyeBallShapeAdapter.setShapeQrSelect(it.cusQrEntity.qrEyeBallShape)
+            themeAdapter.setThemeSelect(it.cusThemePath)
         }
 
-        viewModel.qrBitmap.observe(this) { qrBitmap ->
-            binding.imageQr.setImageBitmap(qrBitmap)
+        viewModel.cusQrEntity.observe(this) {
+            val dataQr = QrData.Text(viewModel.qrEntity.value?.qrContent!!)
+            val drawableQr = qrCreator.createDrawable(dataQr, it)
+            binding.imageQr.setImageDrawable(drawableQr)
         }
 
-        viewModel.cusQrColor.observe(this) { _ ->
-            val qrEntity = viewModel.getQrEntity()!!
-            viewModel.updateQrBitmap(
-                context = this,
-                qrContent = qrEntity.qrContent,
-                cusQrColor = qrEntity.cusQrColor,
-                cusQrIconPath = qrEntity.cusQrIconPath
-            )
-        }
-
-        viewModel.cusQrIconPath.observe(this) { _ ->
-            val qrEntity = viewModel.getQrEntity()!!
-            viewModel.updateQrBitmap(
-                context = this,
-                qrContent = qrEntity.qrContent,
-                cusQrColor = qrEntity.cusQrColor,
-                cusQrIconPath = qrEntity.cusQrIconPath
-            )
-            val (emptyColor, normalColor, userPhotoColor) = when {
-                qrEntity.cusQrIconPath.contains("bg_not_have") ->
-                    Triple(
-                        R.color.highlight_darkest,
-                        R.color.neutral_light_darkest,
-                        R.color.neutral_light_darkest
-                    )
-
-                qrEntity.cusQrIconPath.startsWith("res://") ->
-                    Triple(
-                        R.color.neutral_light_darkest,
-                        R.color.highlight_darkest,
-                        R.color.neutral_light_darkest
-                    )
-
-                qrEntity.cusQrIconPath.contains("/Android/data/") ->
-                    Triple(
-                        R.color.neutral_light_darkest,
-                        R.color.neutral_light_darkest,
-                        R.color.highlight_darkest
-                    )
-
-                else -> return@observe
-            }
-            binding.buttonLogoEmpty.strokeColor = getColor(emptyColor)
-            binding.buttonLogoNormal.strokeColor = getColor(normalColor)
-            binding.buttonLogoUserPhoto.strokeColor = getColor(userPhotoColor)
-        }
-
-        viewModel.cusThemePath.observe(this) { _ ->
-            val qrEntity = viewModel.getQrEntity()!!
-            val bitmap = BitmapUtils.getBitmapFromPath(this, qrEntity.cusThemePath)
+        viewModel.cusThemePath.observe(this) {
+            val bitmap = BitmapUtils.getBitmapFromPath(this, it)
             binding.imageBackground.setImageBitmap(bitmap)
         }
 
-        viewModel.qrIconPath.observe(this) { path ->
-            binding.imageLogoUserPhoto.setImageBitmap(BitmapUtils.getBitmapFromPath(this, path))
-        }
-
         viewModel.selectedTabIndex.observe(this) { position ->
-            if (position == 1 && binding.recyclerTheme.adapter == null) {
+            if (position == 1 && binding.recyclerShapeBody.adapter == null) {
+                binding.recyclerShapeBody.apply {
+                    layoutManager = GridLayoutManager(
+                        this@EditQrActivity,
+                        CalculateUtils.calculateNoOfColumns(this@EditQrActivity, 70, 20)
+                    )
+                    adapter = bodyShapeAdapter
+                }
+
+                binding.recyclerShapeEyeFrame.apply {
+                    layoutManager = GridLayoutManager(
+                        this@EditQrActivity,
+                        CalculateUtils.calculateNoOfColumns(this@EditQrActivity, 70, 20)
+                    )
+                    adapter = eyeFrameShapeAdapter
+                }
+
+                binding.recyclerShapeEyeBall.apply {
+                    layoutManager = GridLayoutManager(
+                        this@EditQrActivity,
+                        CalculateUtils.calculateNoOfColumns(this@EditQrActivity, 70, 20)
+                    )
+                    adapter = eyeBallShapeAdapter
+                }
+            }
+            if (position == 2 && binding.recyclerTheme.adapter == null) {
                 binding.recyclerTheme.apply {
                     layoutManager = GridLayoutManager(this@EditQrActivity, 3)
                     adapter = themeAdapter
-                }
-            } else if (position == 2 && binding.recyclerColor.adapter == null) {
-                binding.recyclerColor.apply {
-                    layoutManager = GridLayoutManager(
-                        this@EditQrActivity,
-                        CalculateUtils.calculateNoOfColumns(this@EditQrActivity, 60, 20)
-                    )
-                    adapter = colorAdapter
                 }
             }
         }
     }
 
-    /** Activity Result
+    /** Bottom Sheet
      */
+    private val selectColorBottomSheet by lazy {
+        SelectColorBottomSheet(this@EditQrActivity) { id, color ->
+            when (id) {
+                0 -> {
+                    binding.cardCusColorBody.setCardBackgroundColor(Color.parseColor(color))
+                    viewModel.updateCusQrEntity { it.copy(qrBodyDarkColor = color) }
+                }
+
+                1 -> {
+                    binding.cardCusColorEyeFrame.setCardBackgroundColor(Color.parseColor(color))
+                    viewModel.updateCusQrEntity { it.copy(qrEyeFrameColor = color) }
+                }
+
+                2 -> {
+                    binding.cardCusColorEyeBall.setCardBackgroundColor(Color.parseColor(color))
+                    viewModel.updateCusQrEntity { it.copy(qrEyeBallColor = color) }
+                }
+            }
+        }
+    }
+
+    /** Function
+     */
+    private fun showSelectColorBottomSheet(
+        id: Int,
+        textView: TextView,
+        cardView: MaterialCardView
+    ) {
+        selectColorBottomSheet.show()
+        val colorInt = cardView.cardBackgroundColor.defaultColor
+        val hexColor = String.format("#%08X", colorInt)
+        selectColorBottomSheet.setStatus(id, textView.text.toString(), hexColor)
+    }
 
 
     /**
