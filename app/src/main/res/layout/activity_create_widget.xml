@@ -50,7 +50,7 @@
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/button_question"
+                android:id="@+id/button_faq"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:padding="12dp"

@@ -9,9 +9,7 @@
 
     <string name="app_name">QuickBank Widget</string>
 
-    <string name="appwidget_text">EXAMPLE</string>
-
-    <string name="info_help_mail">help.dihaver@gmail.com</string>
+    <string name="info_help_mail">dihaver.studio@gmail.com</string>
 
     <string name="label_bank_logo">Logo ngân hàng</string>
     <string name="label_image">Image</string>
@@ -22,6 +20,7 @@
     <string name="message_guide_add_qr">Nhấn vào + để thêm QR nhận tiền cho bạn.</string>
     <string name="message_qr_empty">Chưa có QR nào</string>
     <string name="message_scan_to_transfer">Quét QR để chuyển tiền đến</string>
-    <string name="add_widget">Add widget</string>
-    <string name="app_widget_description">This is an app widget description</string>
+    <string name="url_privacy_policy">https://dihaver.blogspot.com/p/privacy-policy.html</string>
+    <string name="url_terms_conditions">https://dihaver.blogspot.com/p/terms-conditions.html</string>
+    <string name="url_fab">https://dihaver.blogspot.com/p/faq.html</string>
 </resources>

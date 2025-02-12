@@ -78,6 +78,20 @@
                     app:drawableTint="@color/neutral_dark_medium" />
 
                 <TextView
+                    android:id="@+id/button_faq"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="15dp"
+                    android:padding="20dp"
+                    android:text="Các câu hỏi thường gặp"
+                    android:textColor="@color/neutral_dark_dark"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/svg_solar_question_circle"
+                    app:drawableEndCompat="@drawable/svg_solar_alt_arrow_right"
+                    app:drawableTint="@color/neutral_dark_medium" />
+
+                <TextView
                     android:id="@+id/button_terms"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

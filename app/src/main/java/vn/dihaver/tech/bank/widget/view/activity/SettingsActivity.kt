@@ -55,7 +55,8 @@ class SettingsActivity : AppCompatActivity() {
         val packageInfo = packageManager.getPackageInfo(packageName, 0)
         @SuppressLint("SetTextI18n")
         @Suppress("DEPRECATION")
-        binding.textVersion.text = "${packageInfo.versionName} (${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) packageInfo.longVersionCode else packageInfo.versionCode})"
+        binding.textVersion.text =
+            "${packageInfo.versionName} (${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) packageInfo.longVersionCode else packageInfo.versionCode})"
 
         /** Listener View
          */
@@ -69,6 +70,21 @@ class SettingsActivity : AppCompatActivity() {
                 data = Uri.parse("mailto:")
                 putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.info_help_mail)))
             }
+            startActivity(intent)
+        }
+
+        binding.buttonFaq.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_fab)))
+            startActivity(intent)
+        }
+
+        binding.buttonTerms.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_terms_conditions)))
+            startActivity(intent)
+        }
+
+        binding.buttonPrivacyPolicy.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_privacy_policy)))
             startActivity(intent)
         }
     }

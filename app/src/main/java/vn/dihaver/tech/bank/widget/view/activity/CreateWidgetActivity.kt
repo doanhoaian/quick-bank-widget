@@ -13,6 +13,7 @@ import android.content.res.ColorStateList
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -171,8 +172,9 @@ class CreateWidgetActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.buttonQuestion.setOnClickListener {
-
+        binding.buttonFaq.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_fab)))
+            startActivity(intent)
         }
 
         binding.includeWgSimple.root.setOnClickListener {
