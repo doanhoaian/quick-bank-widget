@@ -67,6 +67,7 @@ object SystemUtils {
         inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
     }
 
+    @Suppress("unused")
     fun Context.copyToClipboard(text: String, isShowToast: Boolean = true) {
         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("label", text)

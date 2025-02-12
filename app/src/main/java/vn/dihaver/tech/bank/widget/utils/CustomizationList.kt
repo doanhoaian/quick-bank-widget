@@ -23,14 +23,6 @@ object CustomizationList {
         "#FFFFFFFF", "#FFFEFDF9", "#FFFFF7F8", "#FFFEF5EE", "#FFF7FCF6", "#FFF3FDFF"
     )
 
-    /** Danh sách màu Stroke */
-    val colorStrokes = listOf(
-        "null", "#FF000000", "#FFC40002", "#FFC04301", "#FFC87C02", "#FF00B30A",
-        "#FF00ACB6", "#FF0039C8", "#FF6400D7", "#FFB100C0", "#FF8E019B",
-        "#FF002B9B", "#FF029199", "#FF009909", "#FF998002", "#FF996102",
-        "#FF993503", "#FF990100"
-    )
-
     /** Danh sách chủ đề */
     val themes = listOf(
         ThemeEntity("bg_not_have", "Không có", R.drawable.bg_not_have),

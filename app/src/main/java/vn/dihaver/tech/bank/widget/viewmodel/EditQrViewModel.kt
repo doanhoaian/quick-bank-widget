@@ -44,7 +44,6 @@ class EditQrViewModel : ViewModel() {
     /** LiveData - Account Alias
      */
     private val _accAlias = MutableLiveData<String>()
-    val accAlias: LiveData<String> = _accAlias
 
     fun updateAccAlias(string: String) {
         _accAlias.value = string

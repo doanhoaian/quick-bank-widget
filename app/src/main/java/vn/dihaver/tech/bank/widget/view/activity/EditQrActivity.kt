@@ -21,7 +21,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.alexzhirkevich.customqrgenerator.QrData
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.tabs.TabLayout
