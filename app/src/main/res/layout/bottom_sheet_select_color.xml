@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/shape_background_bottom_sheet_v1"
     android:backgroundTint="@color/neutral_light_lightest"
     android:orientation="vertical">
@@ -40,67 +40,62 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fillViewport="true"
-        android:isScrollContainer="true"
-        android:overScrollMode="never">
+        android:isScrollContainer="false"
+        android:overScrollMode="ifContentScrolls">
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:nestedScrollingEnabled="false"
-                android:padding="20dp" />
-
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:dividerColor="@color/neutral_light_darkest"
-                app:dividerThickness="0.4dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="20dp"
-                android:gravity="center_vertical">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_color"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    app:cardBackgroundColor="@color/neutral_light_lightest"
-                    app:cardCornerRadius="15dp"
-                    app:cardElevation="2dp"
-                    android:layout_margin="5dp"
-                    app:strokeColor="@color/neutral_light_lightest" />
-
-                <EditText
-                    android:id="@+id/edit_text_color"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@android:color/transparent"
-                    android:hint="màu sắc"
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:gravity="end"
-                    android:maxLength="7"
-                    android:maxLines="1"
-                    android:paddingStart="10dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="10dp"
-                    android:paddingBottom="5dp"
-                    android:textColor="@color/highlight_darkest"
-                    android:textColorHint="@color/neutral_dark_lightest"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </LinearLayout>
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"
+            android:padding="20dp" />
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerColor="@color/neutral_light_darkest"
+        app:dividerThickness="0.4dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="20dp"
+        android:gravity="center_vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_color"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:cardBackgroundColor="@color/neutral_light_lightest"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="2dp"
+            android:layout_margin="5dp"
+            app:strokeColor="@color/neutral_light_lightest" />
+
+        <EditText
+            android:id="@+id/edit_text_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:hint="màu sắc"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:gravity="end"
+            android:maxLength="7"
+            android:maxLines="1"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="5dp"
+            android:textColor="@color/highlight_darkest"
+            android:textColorHint="@color/neutral_dark_lightest"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 </LinearLayout>

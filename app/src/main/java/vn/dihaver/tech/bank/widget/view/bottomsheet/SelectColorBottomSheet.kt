@@ -1,5 +1,6 @@
 package vn.dihaver.tech.bank.widget.view.bottomsheet
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -7,13 +8,12 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
-import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.card.MaterialCardView
 import vn.dihaver.tech.bank.widget.databinding.BottomSheetSelectColorBinding
 import vn.dihaver.tech.bank.widget.utils.CalculateUtils
-import vn.dihaver.tech.bank.widget.utils.QrCustomizationData
+import vn.dihaver.tech.bank.widget.utils.CustomizationList
 import vn.dihaver.tech.bank.widget.view.adapter.ColorAdapter
 
 class SelectColorBottomSheet(
@@ -32,7 +32,7 @@ class SelectColorBottomSheet(
         setContentView(binding.root)
         this.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        colorAdapter = ColorAdapter(context, QrCustomizationData.colors) {
+        colorAdapter = ColorAdapter(context, emptyList()) {
             selectedColor = it
             dismiss()
         }
@@ -82,6 +82,7 @@ class SelectColorBottomSheet(
         super.dismiss()
     }
 
+    @SuppressLint("SetTextI18n")
     fun setStatus(id: Int, title: String, color: String) {
         idView = id
         selectedColor = color
@@ -94,6 +95,12 @@ class SelectColorBottomSheet(
 
         binding.textTitle.text = "Chọn màu cho $title"
         binding.cardColor.setCardBackgroundColor(Color.parseColor(color))
+
+        if (id == 3) {
+            colorAdapter.setColors(CustomizationList.colorBacks)
+        } else {
+            colorAdapter.setColors(CustomizationList.colorFores)
+        }
         colorAdapter.setColorSelect(color)
     }
 

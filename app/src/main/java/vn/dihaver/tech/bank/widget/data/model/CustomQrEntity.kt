@@ -3,7 +3,6 @@ package vn.dihaver.tech.bank.widget.data.model
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
-import vn.dihaver.tech.bank.widget.utils.BitmapUtils
 
 @Parcelize
 data class CustomQrEntity(
@@ -16,6 +15,9 @@ data class CustomQrEntity(
     @SerializedName("qr_body_dark_color")
     var qrBodyDarkColor: String = "#FF000000",
 
+    @SerializedName("qr_background_color")
+    var qrBackgroundColor: String = "#FFFFFFFF",
+
     @SerializedName("qr_eye_ball_shape")
     var qrEyeBallShape: EyeBallShape = EyeBallShape.Default,
 
@@ -26,11 +28,12 @@ data class CustomQrEntity(
     var qrBodyDarkShape: BodyShape = BodyShape.Default,
 
     @SerializedName("qr_logo_path")
-    var qrLogoPath: String = BitmapUtils.convertNameToPath("bg_not_have", BitmapUtils.PathType.RES),
+    var qrLogoPath: String = "null",
 ) : Parcelable
 
 enum class BodyShape {
     Circle,
+    CircleMini,
     Default,
     Rect,
     Rhombus,
@@ -40,18 +43,20 @@ enum class BodyShape {
     Star
 }
 
+enum class EyeFrameShape {
+    Circle,
+    Default,
+    RoundCorners,
+    RoundCornersR,
+    RoundCornersZ,
+}
+
 enum class EyeBallShape {
     Circle,
     Default,
     Rect,
-    Rhombus,
-    RoundCorners
-}
-
-enum class EyeFrameShape {
-    Circle,
-    Default,
-    Rect,
-    RoundCorners
+    RoundCorners,
+    RoundCornersHorizontal,
+    RoundCornersVertical
 }
 

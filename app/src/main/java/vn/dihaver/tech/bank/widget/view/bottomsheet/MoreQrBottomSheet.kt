@@ -23,6 +23,11 @@ class MoreQrBottomSheet(context: Context, private val listener: MoreQrBottomShee
             dismiss()
         }
 
+        binding.buttonEdit.setOnClickListener {
+            listener.onEdit()
+            dismiss()
+        }
+
         binding.buttonShare.setOnClickListener {
             listener.onShare()
             dismiss()
@@ -41,6 +46,7 @@ class MoreQrBottomSheet(context: Context, private val listener: MoreQrBottomShee
 
     interface MoreQrBottomSheetListener {
         fun onWidget()
+        fun onEdit()
         fun onShare()
         fun onDownload()
         fun onDelete()

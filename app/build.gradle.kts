@@ -52,11 +52,12 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.palette.ktx)
     implementation(libs.core)
+    implementation(libs.custom.qr.generator)
     implementation(libs.floatingactionbutton)
     implementation(libs.glide)
     implementation(libs.gson)
     implementation(libs.material)
+    implementation(libs.ucrop)
     implementation(libs.zxing.android.embedded)
-    implementation(libs.custom.qr.generator)
     testImplementation(libs.junit)
 }

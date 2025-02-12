@@ -3,7 +3,6 @@ package vn.dihaver.tech.bank.widget.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
 import vn.dihaver.tech.bank.widget.data.model.CustomQrEntity
 import vn.dihaver.tech.bank.widget.data.model.QrEntity
 import vn.dihaver.tech.bank.widget.utils.FormatUtils.removeDiacritics
@@ -58,7 +57,7 @@ class EditQrViewModel : ViewModel() {
 
     fun updateCusQrEntity(update: (CustomQrEntity) -> CustomQrEntity) {
         _cusQrEntity.value = _cusQrEntity.value?.let(update)
-        _qrEntity.value = _qrEntity.value?.copy(cusQrEntity = _cusQrEntity.value!!)
+//        _qrEntity.value = _qrEntity.value?.copy(cusQrEntity = _cusQrEntity.value!!)
     }
 
     /** LiveData - Custom ThemePath
@@ -77,20 +76,6 @@ class EditQrViewModel : ViewModel() {
 
     fun updateSelectTabIndex(position: Int?) {
         _selectedTabIndex.value = position
-    }
-
-    /** LiveData - Image QrLogo User Pick
-     */
-    private val _qrIconPath = MutableLiveData("")
-    val qrIconPath: LiveData<String> = _qrIconPath
-    val isQrIconPathEmpty: LiveData<Boolean> = _qrIconPath.map { it.isNullOrEmpty() }
-
-    fun getQrIconPath(): String? {
-        return _qrIconPath.value
-    }
-
-    fun updateQrIconPath(string: String) {
-        _qrIconPath.value = string
     }
 
 }

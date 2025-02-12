@@ -8,14 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import vn.dihaver.tech.bank.widget.R
 import vn.dihaver.tech.bank.widget.databinding.AdapterColorBinding
-import vn.dihaver.tech.bank.widget.utils.CalculateUtils.dpToPixel
 
 
-class ColorAdapter(val context: Context, private val items: List<String>, private val listener: OnColorListener) : RecyclerView.Adapter<ColorAdapter.ColorViewHolder>() {
+class ColorAdapter(val context: Context, private var items: List<String>, private val listener: OnColorListener) : RecyclerView.Adapter<ColorAdapter.ColorViewHolder>() {
 
     class ColorViewHolder(val binding: AdapterColorBinding) : ViewHolder(binding.root)
 
+    private val colorSelected = context.getColor(R.color.highlight_dark)
+    private val colorUnSelected = context.getColor(R.color.neutral_light_darkest)
     private var selectedPosition: Int = RecyclerView.NO_POSITION
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColorViewHolder {
@@ -27,17 +29,23 @@ class ColorAdapter(val context: Context, private val items: List<String>, privat
         val binding = holder.binding
         val item = items[position]
 
-        binding.colorView.setCardBackgroundColor(Color.parseColor(item))
-
-        if (position == selectedPosition) {
-            binding.colorView.strokeWidth = 2.dpToPixel(context)
-            binding.colorViewSelect.visibility = View.VISIBLE
+        if (item != "null") {
+            binding.imageNull.visibility = View.GONE
+            binding.cardView.setCardBackgroundColor(Color.parseColor(item))
         } else {
-            binding.colorView.strokeWidth = 0
-            binding.colorViewSelect.visibility = View.GONE
+            binding.imageNull.visibility = View.VISIBLE
+            binding.cardView.setCardBackgroundColor(context.getColor(R.color.neutral_light_medium))
         }
 
-        binding.colorView.setOnClickListener {
+        if (position == selectedPosition) {
+            binding.cardView.strokeColor = colorSelected
+            binding.imageSelect.visibility = View.VISIBLE
+        } else {
+            binding.cardView.strokeColor = colorUnSelected
+            binding.imageSelect.visibility = View.GONE
+        }
+
+        binding.cardView.setOnClickListener {
             if (position != selectedPosition) {
                 val previousPosition = selectedPosition
                 selectedPosition = position
@@ -64,6 +72,14 @@ class ColorAdapter(val context: Context, private val items: List<String>, privat
             val previousPosition = selectedPosition
             selectedPosition = -1
             notifyItemChanged(previousPosition)
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setColors(newItems: List<String>) {
+        if (items != newItems) {
+            items = newItems
+            notifyDataSetChanged()
         }
     }
 

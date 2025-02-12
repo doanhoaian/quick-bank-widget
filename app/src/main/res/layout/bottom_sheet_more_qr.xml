@@ -33,11 +33,28 @@
         android:paddingTop="15dp"
         android:paddingEnd="20dp"
         android:paddingBottom="15dp"
-        android:text="Tạo Widget cho QR này"
+        android:text="Tạo Widget"
         android:textColor="@color/neutral_dark_dark"
         android:textSize="18sp"
         android:textStyle="bold"
         app:drawableStartCompat="@drawable/svg_solar_widget_add"
+        app:drawableTint="@color/neutral_dark_dark" />
+
+    <TextView
+        android:id="@+id/button_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="15dp"
+        android:gravity="center_vertical"
+        android:paddingStart="20dp"
+        android:paddingTop="15dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="15dp"
+        android:text="@string/action_edit"
+        android:textColor="@color/neutral_dark_dark"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:drawableStartCompat="@drawable/svg_solar_pen_2"
         app:drawableTint="@color/neutral_dark_dark" />
 
     <TextView

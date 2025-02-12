@@ -9,7 +9,7 @@
         tools:ignore="PermissionImpliesUnsupportedChromeOsHardware" />
     <uses-permission
         android:name="android.permission.READ_MEDIA_IMAGES"
-        tools:ignore="SelectedPhotoAccess"/>
+        tools:ignore="SelectedPhotoAccess" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
@@ -33,14 +33,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="35">
+        <receiver
+            android:name=".view.widget.QrAdvancedWidget"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_qr_advanced_info" />
+        </receiver>
+
         <activity
-            android:name=".view.activity.CreateWidgetActivity"
+            android:name="com.yalantis.ucrop.UCropActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
-            android:exported="false"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <activity
-            android:name=".view.activity.EditWidgetActivity"
+            android:name=".view.activity.CreateWidgetActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:exported="false"
             android:screenOrientation="portrait"
@@ -84,6 +96,30 @@
             </intent-filter>
         </activity>
 
+        <receiver
+            android:name=".view.widget.QrSimpleWidget"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_qr_simple_info" />
+        </receiver>
+
+        <receiver
+            android:name=".view.widget.QrAdvancedWidget"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_qr_advanced_info" />
+        </receiver>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -93,14 +129,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_images_paths" />
         </provider>
-
-        <receiver
-            android:name=".view.widget.QrSimpleSmallWidget"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>

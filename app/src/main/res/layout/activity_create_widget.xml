@@ -23,9 +23,9 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/neutral_light_lightest"
             android:orientation="horizontal"
-            android:padding="10dp"
-            android:background="@color/neutral_light_medium">
+            android:padding="10dp">
 
             <ImageView
                 android:id="@+id/button_back"
@@ -77,7 +77,7 @@
                     android:paddingTop="20dp"
                     android:paddingEnd="20dp"
                     android:paddingBottom="10dp"
-                    android:text="Tiện ích đã thêm"
+                    android:text="Widget đã ghim màn hình"
                     android:textColor="@color/neutral_dark_dark"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -106,7 +106,7 @@
                     android:paddingTop="20dp"
                     android:paddingEnd="20dp"
                     android:paddingBottom="10dp"
-                    android:text="Tất cả tiện ích"
+                    android:text="Tất cả mẫu Widget"
                     android:textColor="@color/neutral_dark_dark"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -121,33 +121,16 @@
                     android:orientation="vertical">
 
                     <include
-                        android:id="@+id/include_wg_s1"
-                        layout="@layout/widget_qr_simple_small"
+                        android:id="@+id/include_wg_simple"
+                        layout="@layout/widget_qr_simple"
                         android:layout_width="134dp"
                         android:layout_height="134dp" />
-
-                    <!--                    <com.google.android.material.card.MaterialCardView-->
-                    <!--                        android:layout_width="134dp"-->
-                    <!--                        android:layout_height="134dp"-->
-                    <!--                        android:layout_margin="5dp"-->
-                    <!--                        android:backgroundTint="@color/neutral_light_lightest"-->
-                    <!--                        app:cardCornerRadius="10dp"-->
-                    <!--                        app:cardElevation="2dp"-->
-                    <!--                        app:strokeColor="@color/neutral_light_darkest"-->
-                    <!--                        app:strokeWidth="1dp">-->
-
-                    <!--                        <ImageView-->
-                    <!--                            android:id="@+id/image_s1_qr"-->
-                    <!--                            android:layout_width="match_parent"-->
-                    <!--                            android:layout_height="match_parent"-->
-                    <!--                            android:padding="10dp"-->
-                    <!--                            android:src="@drawable/img_qr_sample" />-->
-                    <!--                    </com.google.android.material.card.MaterialCardView>-->
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:layout_marginTop="5dp"
                         android:text="QR đơn giản (2x2)"
                         android:textColor="@color/neutral_dark_medium"
                         android:textSize="11sp" />
@@ -162,127 +145,18 @@
                     android:layout_marginBottom="5dp"
                     android:orientation="vertical">
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="134dp"
-                        android:layout_height="134dp"
-                        android:layout_margin="5dp"
-                        android:backgroundTint="@color/neutral_light_lightest"
-                        app:cardCornerRadius="10dp"
-                        app:cardElevation="2dp"
-                        app:strokeColor="@color/neutral_light_darkest"
-                        app:strokeWidth="1dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:id="@+id/image_s2_logo"
-                                android:layout_width="match_parent"
-                                android:layout_height="26.8dp"
-                                android:src="@drawable/logo_bank_vcb" />
-
-                            <ImageView
-                                android:id="@+id/image_s2_qr"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginBottom="10dp"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/img_qr_sample" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="QR logo (2x2)"
-                        android:textColor="@color/neutral_dark_medium"
-                        android:textSize="11sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginBottom="5dp"
-                    android:orientation="vertical">
-
-                    <com.google.android.material.card.MaterialCardView
+                    <include
+                        android:id="@+id/include_wg_advanced"
+                        layout="@layout/widget_qr_advanced"
                         android:layout_width="268dp"
-                        android:layout_height="134dp"
-                        android:layout_margin="5dp"
-                        android:backgroundTint="@color/neutral_light_lightest"
-                        app:cardCornerRadius="10dp"
-                        app:cardElevation="2dp"
-                        app:strokeColor="@color/neutral_light_darkest"
-                        app:strokeWidth="1dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:orientation="vertical"
-                                android:padding="10dp">
-
-                                <ImageView
-                                    android:id="@+id/image_s3_logo"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:adjustViewBounds="true"
-                                    android:src="@drawable/logo_bank_vcb" />
-
-                                <TextView
-                                    android:id="@+id/text_s3_acc_holder_name"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:ellipsize="middle"
-                                    android:gravity="center"
-                                    android:maxLines="1"
-                                    android:text="@string/label_textview"
-                                    android:textColor="@color/neutral_dark_darkest"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/text_s3_acc_number"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:ellipsize="middle"
-                                    android:gravity="center"
-                                    android:maxLines="1"
-                                    android:text="@string/label_textview"
-                                    android:textColor="@color/highlight_darkest"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-
-                            <ImageView
-                                android:id="@+id/image_s3_qr"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:padding="10dp"
-                                android:src="@drawable/img_qr_sample" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
+                        android:layout_height="134dp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="QR đầy đủ (4x2)"
+                        android:layout_marginTop="5dp"
+                        android:text="QR nâng cao (4x2)"
                         android:textColor="@color/neutral_dark_medium"
                         android:textSize="11sp" />
                 </LinearLayout>

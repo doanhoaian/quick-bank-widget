@@ -22,4 +22,6 @@
     <string name="message_guide_add_qr">Nhấn vào + để thêm QR nhận tiền cho bạn.</string>
     <string name="message_qr_empty">Chưa có QR nào</string>
     <string name="message_scan_to_transfer">Quét QR để chuyển tiền đến</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">This is an app widget description</string>
 </resources>

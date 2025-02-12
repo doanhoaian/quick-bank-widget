@@ -15,7 +15,7 @@ class ThemeAdapter(val context: Context, private val items: List<ThemeEntity>, p
     class ImageBackgroundViewHolder(val binding: AdapterThemeBinding): RecyclerView.ViewHolder(binding.root)
 
     private val colorSelected = context.getColor(R.color.highlight_dark)
-    private val colorUnSelected = context.getColor(R.color.neutral_dark_light)
+    private val colorUnSelected = context.getColor(R.color.neutral_dark_lightest)
 
     private var selectedPosition: Int = RecyclerView.NO_POSITION
 

@@ -10,6 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="10dp"
+        android:clipToPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="2:2"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,10 +18,18 @@
         app:layout_constraintWidth_percent="0.3">
 
         <include
-            android:id="@+id/include_wg_s1"
-            layout="@layout/widget_qr_simple_small"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:id="@+id/include_wg_simple"
+            layout="@layout/widget_qr_simple"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+        <include
+            android:id="@+id/include_wg_advanced"
+            layout="@layout/widget_qr_advanced"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -57,27 +66,12 @@
             android:textColor="@color/highlight_darkest"
             android:textSize="13sp" />
 
-        <TextView
-            android:id="@+id/button_apply"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/shape_rect_radius"
-            android:gravity="center"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:text="Cài đặt"
-            android:textColor="@color/neutral_light_lightest"
-            android:textSize="12sp" />
-
         <ImageView
             android:id="@+id/button_remove"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="20dp"
-            android:layout_toStartOf="@+id/button_apply"
+            android:layout_alignParentEnd="true"
             android:background="@drawable/shape_rect_radius"
             android:backgroundTint="@color/neutral_light_darkest"
             android:padding="5dp"

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/shape_background_bottom_sheet_v1"
     android:backgroundTint="@color/neutral_light_lightest"
     android:orientation="vertical">
@@ -41,8 +41,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
-        android:overScrollMode="never"
-        android:isScrollContainer="true">
+        android:overScrollMode="ifContentScrolls"
+        android:isScrollContainer="false">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"

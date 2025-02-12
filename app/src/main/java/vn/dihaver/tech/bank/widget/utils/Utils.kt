@@ -10,7 +10,9 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.graphics.Paint
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -170,6 +172,24 @@ object ImageUtils {
             e.printStackTrace()
             Toast.makeText(context, "Lỗi khi chia sẻ ảnh", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun Drawable.drawableQrToBitmap(bgColor: Int, size: Int = 512, drawableSize: Int = 452): Bitmap {
+        val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        val paint = Paint().apply {
+            color = bgColor
+            style = Paint.Style.FILL
+        }
+        canvas.drawRect(0f, 0f, size.toFloat(), size.toFloat(), paint)
+        val dx = ((size - drawableSize) / 2).toFloat()
+        val dy = ((size - drawableSize) / 2).toFloat()
+        canvas.save()
+        canvas.translate(dx, dy)
+        this.setBounds(0, 0, drawableSize, drawableSize)
+        this.draw(canvas)
+        canvas.restore()
+        return bitmap
     }
 }
 

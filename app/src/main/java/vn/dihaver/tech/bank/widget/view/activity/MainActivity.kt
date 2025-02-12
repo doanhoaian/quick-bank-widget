@@ -3,6 +3,7 @@ package vn.dihaver.tech.bank.widget.view.activity
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
@@ -62,6 +63,13 @@ class MainActivity : AppCompatActivity() {
         initComponent()
         initView()
         observeViewModel()
+
+        handleWidgetIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleWidgetIntent(intent)
     }
 
     @Suppress("unused")
@@ -132,10 +140,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.buttonEditQr.setOnClickListener {
-            val intent = Intent(this, EditQrActivity::class.java).apply {
-                putExtra("qr_entity", viewModel.getQrEntityCurrent())
-            }
-            editQrLauncher.launch(intent)
+            openEditQrActivity()
         }
 
         binding.buttonSettings.setOnClickListener {
@@ -211,14 +216,7 @@ class MainActivity : AppCompatActivity() {
             val dataQr = QrData.Text(it.qrContent)
             val drawableQr = qrCreator.createDrawable(dataQr, it.cusQrEntity)
             binding.imageQr.setImageDrawable(drawableQr)
-//            binding.imageQr.setImageBitmap(
-//                QrUtils.createQrBitmap(
-//                    context = this,
-//                    qrContent = it.qrContent,
-//                    cusQrColor = it.cusQrColor,
-//                    cusQrIconPath = it.cusQrIconPath
-//                )
-//            )
+            binding.containerQr.setCardBackgroundColor(Color.parseColor(it.cusQrEntity.qrBackgroundColor))
 
             binding.imageBackground.setImageBitmap(
                 BitmapUtils.getBitmapFromPath(
@@ -281,6 +279,10 @@ class MainActivity : AppCompatActivity() {
         MoreQrBottomSheet(this, object : MoreQrBottomSheet.MoreQrBottomSheetListener {
             override fun onWidget() {
                 openCreateWidget()
+            }
+
+            override fun onEdit() {
+                openEditQrActivity()
             }
 
             override fun onShare() {
@@ -437,6 +439,22 @@ class MainActivity : AppCompatActivity() {
                         snackbar.setText("Đã sửa QR").show()
                     }
                 }
+            }
+        }
+    }
+
+    private fun openEditQrActivity() {
+        val intent = Intent(this, EditQrActivity::class.java).apply {
+            putExtra("qr_entity", viewModel.getQrEntityCurrent())
+        }
+        editQrLauncher.launch(intent)
+    }
+
+    private fun handleWidgetIntent(intent: Intent) {
+        intent.getStringExtra("qr_entity_id")?.let {
+            val qrEntity = qrStorage.getQrById(it)
+            if (qrEntity != null) {
+                viewModel.updateQrEntityCurrent(qrEntity)
             }
         }
     }

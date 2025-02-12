@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="60dp"
+    android:layout_height="60dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        app:cardBackgroundColor="@color/neutral_light_lightest"
+        app:cardCornerRadius="100dp"
+        app:cardElevation="2dp"
+        app:strokeColor="@color/neutral_light_darkest">
+
+        <ImageView
+            android:id="@+id/image_null"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:importantForAccessibility="no"
+            android:padding="10dp"
+            android:src="@drawable/svg_fonts_block"
+            app:tint="@color/neutral_light_darkest" />
+
+        <ImageView
+            android:id="@+id/image_logo_bank"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:importantForAccessibility="no"
+            android:padding="10dp"
+            android:src="@drawable/icon_bank_vcb" />
+
+        <ImageView
+            android:id="@+id/image_file"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:importantForAccessibility="no"
+            android:scaleType="centerCrop"/>
+
+        <ImageView
+            android:id="@+id/image_add"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:importantForAccessibility="no"
+            android:padding="10dp"
+            android:src="@drawable/svg_fonts_add_photo_alternate"
+            app:tint="@color/neutral_light_darkest" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <ImageView
+        android:id="@+id/image_select"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="5dp"
+        android:elevation="4dp"
+        android:importantForAccessibility="no"
+        android:src="@drawable/svg_solar_check_circle" />
+</RelativeLayout>

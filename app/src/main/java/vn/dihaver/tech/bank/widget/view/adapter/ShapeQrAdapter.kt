@@ -20,7 +20,7 @@ class ShapeQrAdapter(
     class ShapeQrViewHolder(val binding: AdapterShapeQrBinding) : ViewHolder(binding.root)
 
     private val colorSelected = context.getColor(R.color.highlight_dark)
-    private val colorUnSelected = context.getColor(R.color.neutral_dark_light)
+    private val colorUnSelected = context.getColor(R.color.neutral_light_darkest)
 
     private var selectedPosition: Int = RecyclerView.NO_POSITION
 
