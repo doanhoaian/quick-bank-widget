@@ -50,7 +50,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="2"
-            android:text="Mặc định"
+            android:text="@string/label_normal"
             android:textColor="@color/highlight_darkest"
             android:textSize="14sp"
             android:textStyle="bold" />

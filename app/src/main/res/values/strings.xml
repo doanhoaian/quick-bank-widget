@@ -1,26 +1,75 @@
 <resources>
     <string name="action_add_amount">Thêm số tiền</string>
     <string name="action_add_qr">Thêm QR</string>
+    <string name="action_back">Quay lại</string>
     <string name="action_change_profile">Thay đổi hồ sơ</string>
+    <string name="action_continue">Tiếp tục</string>
     <string name="action_create_widget">Tạo Widget</string>
+    <string name="action_delete">Xóa</string>
+    <string name="action_delete_all">Xóa tất cả</string>
+    <string name="action_delete_qr_code">Xóa QR Code</string>
+    <string name="action_download">Tải về</string>
     <string name="action_edit">Chỉnh sửa</string>
     <string name="action_open_menu">Mở Menu</string>
+    <string name="action_request_feature"><![CDATA[Yêu cầu tính năng & Báo lỗi]]></string>
+    <string name="action_save">Lưu</string>
+    <string name="action_save_changed">Lưu thay đổi</string>
+    <string name="action_scan_code">Quét mã</string>
     <string name="action_settings">Cài đặt</string>
+    <string name="action_share">Chia sẻ</string>
 
     <string name="app_name">QuickBank Widget</string>
 
     <string name="info_help_mail">dihaver.studio@gmail.com</string>
 
+    <string name="label_account">Tài khoản</string>
+    <string name="label_account_holder_name">Tên chủ tài khoản</string>
+    <string name="label_account_number">Số tài khoản</string>
+    <string name="label_advanced_qr_4x2">QR nâng cao (4x2)</string>
+    <string name="label_alias_name">Tên gợi nhớ</string>
+    <string name="label_all_widget">Tất cả mẫu Widget</string>
+    <string name="label_background_color">Màu nền</string>
     <string name="label_bank_logo">Logo ngân hàng</string>
+    <string name="label_body">Thân</string>
+    <string name="label_body_shape">Hình dạng Thân</string>
+    <string name="label_color">Màu sắc</string>
+    <string name="label_eye_ball">Mắt trong</string>
+    <string name="label_eye_ball_shape">Hình dạng Mắt trong</string>
+    <string name="label_eye_frame">Mắt ngoài</string>
+    <string name="label_eye_frame_shape">Hình dạng Mắt ngoài</string>
+    <string name="label_fab">Các câu hỏi thường gặp</string>
+    <string name="label_faq">Câu hỏi thường gặp</string>
+    <string name="label_flash_light">Đèn Flash</string>
     <string name="label_image">Image</string>
+    <string name="label_logo">Logo</string>
+    <string name="label_normal">Mặc định</string>
+    <string name="label_pinned_widget">Widget đã ghim màn hình</string>
+    <string name="label_privacy_policy">Chính sách Quyền riêng tư</string>
     <string name="label_qr_code">Mã QR</string>
+    <string name="label_qr_list">Danh sách QR</string>
+    <string name="label_simple_qr_2x2">QR đơn giản (2x2)</string>
+    <string name="label_terms_conditions"><![CDATA[Điều khoản & Điều kiện]]></string>
     <string name="label_textview">TextView</string>
+    <string name="label_theme">Chủ đề</string>
+    <string name="label_version">Phiên bản</string>
+    <string name="label_vnd">VND</string>
 
+    <string name="message_create_qr_to">Bạn muốn tạo QR cho</string>
     <string name="message_error_try_again">Đã xảy ra lỗi, vui lòng thử lại</string>
     <string name="message_guide_add_qr">Nhấn vào + để thêm QR nhận tiền cho bạn.</string>
+    <string name="message_how_much">số tiền?</string>
+    <string name="message_move_to_scan">Di chuyển camera vào mã QR</string>
     <string name="message_qr_empty">Chưa có QR nào</string>
     <string name="message_scan_to_transfer">Quét QR để chuyển tiền đến</string>
+    <string name="message_what_bank">ngân hàng nào?</string>
+    <string name="message_what_holder_name">tên chủ tài khoản?</string>
+    <string name="message_what_message">với lời nhắn - Slogan?</string>
+    <string name="message_what_number">số tài khoản?</string>
+    <string name="message_what_want">Bạn muốn nhận</string>
+    <string name="message_what_you_set">của bạn muốn đặt là?</string>
+    <string name="message_what_your">của bạn là?</string>
+
+    <string name="url_fab">https://dihaver.blogspot.com/p/faq.html</string>
     <string name="url_privacy_policy">https://dihaver.blogspot.com/p/privacy-policy.html</string>
     <string name="url_terms_conditions">https://dihaver.blogspot.com/p/terms-conditions.html</string>
-    <string name="url_fab">https://dihaver.blogspot.com/p/faq.html</string>
 </resources>

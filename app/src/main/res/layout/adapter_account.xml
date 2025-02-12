@@ -20,6 +20,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@drawable/shape_oval_stroke_white"
+            android:importantForAccessibility="no"
             android:padding="10dp"
             android:src="@drawable/icon_bank_vcb" />
 
@@ -71,6 +72,7 @@
             android:id="@+id/image_select"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:importantForAccessibility="no"
             android:src="@drawable/select_svg_fonts_check_circle" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

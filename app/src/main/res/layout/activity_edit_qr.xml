@@ -33,6 +33,7 @@
                 android:id="@+id/image_background"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:importantForAccessibility="no"
                 android:scaleType="centerCrop" />
 
             <LinearLayout
@@ -71,6 +72,7 @@
                         android:layout_marginStart="30dp"
                         android:layout_marginEnd="30dp"
                         android:adjustViewBounds="true"
+                        android:importantForAccessibility="no"
                         android:src="@drawable/logo_bank_tcb" />
 
                     <ImageView
@@ -82,6 +84,7 @@
                         android:layout_marginEnd="15dp"
                         android:layout_marginBottom="5dp"
                         android:adjustViewBounds="true"
+                        android:importantForAccessibility="no"
                         android:src="@drawable/img_qr_sample" />
 
                     <LinearLayout
@@ -98,6 +101,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="15dp"
                             android:adjustViewBounds="true"
+                            android:importantForAccessibility="no"
                             android:src="@drawable/logo_vietqr" />
 
                         <View
@@ -109,6 +113,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="11dp"
                             android:adjustViewBounds="true"
+                            android:importantForAccessibility="no"
                             android:src="@drawable/logo_napas" />
                     </LinearLayout>
 
@@ -163,17 +168,17 @@
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tài khoản" />
+                    android:text="@string/label_account" />
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mã QR" />
+                    android:text="@string/label_qr_code" />
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Chủ đề" />
+                    android:text="@string/label_theme" />
             </com.google.android.material.tabs.TabLayout>
 
             <com.google.android.material.divider.MaterialDivider
@@ -226,8 +231,10 @@
                                         android:layout_width="50dp"
                                         android:layout_height="50dp"
                                         android:background="@drawable/shape_oval_white"
+                                        android:importantForAccessibility="no"
                                         android:padding="10dp"
-                                        android:src="@drawable/icon_bank_vcb" />
+                                        android:src="@drawable/icon_bank_vcb"
+                                        tools:ignore="TooDeepLayout" />
 
                                     <LinearLayout
                                         android:layout_width="0dp"
@@ -244,7 +251,7 @@
                                             android:ellipsize="middle"
                                             android:maxLines="2"
                                             android:padding="2dp"
-                                            android:text="Techcombank"
+                                            android:text="@string/label_textview"
                                             android:textColor="@color/neutral_light_lightest"
                                             android:textSize="18sp"
                                             android:textStyle="bold" />
@@ -256,7 +263,7 @@
                                             android:ellipsize="middle"
                                             android:maxLines="2"
                                             android:padding="2dp"
-                                            android:text="NH TMCP Kỹ thương Việt Nam"
+                                            android:text="@string/label_textview"
                                             android:textColor="@color/neutral_light_light"
                                             android:textSize="12sp" />
                                     </LinearLayout>
@@ -264,6 +271,7 @@
                                     <ImageView
                                         android:layout_width="18dp"
                                         android:layout_height="18dp"
+                                        android:importantForAccessibility="no"
                                         android:src="@drawable/svg_solar_fill_verified_check"
                                         app:tint="@color/neutral_light_lightest" />
                                 </LinearLayout>
@@ -282,7 +290,7 @@
                                         android:maxLines="2"
                                         android:paddingStart="10dp"
                                         android:paddingEnd="10dp"
-                                        android:text="Số tài khoản"
+                                        android:text="@string/label_account_number"
                                         android:textColor="@color/neutral_dark_darkest"
                                         android:textSize="15sp"
                                         android:textStyle="bold" />
@@ -298,7 +306,7 @@
                                         android:paddingTop="5dp"
                                         android:paddingEnd="10dp"
                                         android:paddingBottom="5dp"
-                                        android:text="1509889911"
+                                        android:text="@string/label_textview"
                                         android:textColor="@color/highlight_darkest"
                                         android:textSize="16sp"
                                         android:textStyle="bold" />
@@ -310,7 +318,7 @@
                                         android:maxLines="2"
                                         android:paddingStart="10dp"
                                         android:paddingEnd="10dp"
-                                        android:text="Tên chủ tài khoản"
+                                        android:text="@string/label_account_holder_name"
                                         android:textColor="@color/neutral_dark_darkest"
                                         android:textSize="15sp"
                                         android:textStyle="bold" />
@@ -321,11 +329,13 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginBottom="15dp"
                                         android:backgroundTint="@android:color/transparent"
-                                        android:hint="của bạn là?"
+                                        android:hint="@string/message_what_your"
                                         android:imeOptions="actionDone"
+                                        android:importantForAutofill="no"
                                         android:inputType="text"
                                         android:maxLength="50"
                                         android:maxLines="1"
+                                        android:minHeight="48dp"
                                         android:paddingStart="10dp"
                                         android:paddingTop="5dp"
                                         android:paddingEnd="10dp"
@@ -342,7 +352,7 @@
                                         android:maxLines="2"
                                         android:paddingStart="10dp"
                                         android:paddingEnd="10dp"
-                                        android:text="Tên gợi nhớ"
+                                        android:text="@string/label_alias_name"
                                         android:textColor="@color/neutral_dark_darkest"
                                         android:textSize="15sp"
                                         android:textStyle="bold" />
@@ -353,11 +363,13 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginBottom="5dp"
                                         android:backgroundTint="@android:color/transparent"
-                                        android:hint="của bạn muốn đặt là?"
+                                        android:hint="@string/message_what_you_set"
                                         android:imeOptions="actionDone"
+                                        android:importantForAutofill="no"
                                         android:inputType="text"
                                         android:maxLength="50"
                                         android:maxLines="1"
+                                        android:minHeight="48dp"
                                         android:paddingStart="10dp"
                                         android:paddingTop="5dp"
                                         android:paddingEnd="10dp"
@@ -384,7 +396,7 @@
                             android:paddingTop="20dp"
                             android:paddingEnd="20dp"
                             android:paddingBottom="10dp"
-                            android:text="Màu sắc"
+                            android:text="@string/label_color"
                             android:textColor="@color/neutral_dark_darkest"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -414,7 +426,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
-                                android:text="Thân"
+                                android:text="@string/label_body"
                                 android:textColor="@color/neutral_dark_darkest"
                                 android:textSize="16.5sp"
                                 app:drawableEndCompat="@drawable/svg_solar_alt_arrow_right"
@@ -446,7 +458,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
-                                android:text="Mắt ngoài"
+                                android:text="@string/label_eye_frame"
                                 android:textColor="@color/neutral_dark_darkest"
                                 android:textSize="16.5sp"
                                 app:drawableEndCompat="@drawable/svg_solar_alt_arrow_right"
@@ -478,7 +490,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
-                                android:text="Mắt trong"
+                                android:text="@string/label_eye_ball"
                                 android:textColor="@color/neutral_dark_darkest"
                                 android:textSize="16.5sp"
                                 app:drawableEndCompat="@drawable/svg_solar_alt_arrow_right"
@@ -510,7 +522,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
-                                android:text="Màu nền"
+                                android:text="@string/label_background_color"
                                 android:textColor="@color/neutral_dark_darkest"
                                 android:textSize="16.5sp"
                                 app:drawableEndCompat="@drawable/svg_solar_alt_arrow_right"
@@ -523,7 +535,7 @@
                             android:paddingStart="20dp"
                             android:paddingTop="20dp"
                             android:paddingEnd="20dp"
-                            android:text="Logo"
+                            android:text="@string/label_logo"
                             android:textColor="@color/neutral_dark_darkest"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -545,7 +557,7 @@
                             android:paddingStart="20dp"
                             android:paddingTop="20dp"
                             android:paddingEnd="20dp"
-                            android:text="Hình dạng Thân"
+                            android:text="@string/label_body_shape"
                             android:textColor="@color/neutral_dark_darkest"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -564,7 +576,7 @@
                             android:paddingStart="20dp"
                             android:paddingTop="20dp"
                             android:paddingEnd="20dp"
-                            android:text="Hình dạng Mắt ngoài"
+                            android:text="@string/label_eye_frame_shape"
                             android:textColor="@color/neutral_dark_darkest"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -583,7 +595,7 @@
                             android:paddingStart="20dp"
                             android:paddingTop="20dp"
                             android:paddingEnd="20dp"
-                            android:text="Hình dạng Mắt trong"
+                            android:text="@string/label_eye_ball_shape"
                             android:textColor="@color/neutral_dark_darkest"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -634,7 +646,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="Quay lại"
+                    android:text="@string/action_back"
                     android:textColor="@color/neutral_dark_darkest"
                     app:strokeColor="@color/neutral_dark_darkest" />
 
@@ -645,7 +657,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="5dp"
                     android:backgroundTint="@color/neutral_dark_darkest"
-                    android:text="Lưu thay đổi"
+                    android:text="@string/action_save_changed"
                     android:textColor="@color/neutral_light_lightest" />
             </LinearLayout>
         </LinearLayout>

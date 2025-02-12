@@ -34,7 +34,7 @@
             android:maxLines="2"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:text="Bạn muốn nhận"
+            android:text="@string/message_what_want"
             android:textColor="@color/neutral_dark_darkest"
             android:textSize="22sp"
             android:textStyle="bold" />
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="VND"
+                android:text="@string/label_vnd"
                 android:textColor="@color/neutral_dark_darkest"
                 android:textSize="22sp"
                 android:textStyle="bold" />
@@ -61,9 +61,11 @@
                 android:id="@+id/edit_text_money"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="48dp"
                 android:backgroundTint="@android:color/transparent"
-                android:hint="số tiền?"
+                android:hint="@string/message_how_much"
                 android:imeOptions="actionDone"
+                android:importantForAutofill="no"
                 android:inputType="number"
                 android:maxLength="15"
                 android:maxLines="1"
@@ -82,11 +84,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/transparent"
-            android:hint="với lời nhắn - Slogan?"
+            android:hint="@string/message_what_message"
             android:imeOptions="actionDone"
+            android:importantForAutofill="no"
             android:inputType="text"
             android:maxLength="70"
             android:maxLines="2"
+            android:minHeight="48dp"
             android:paddingStart="20dp"
             android:paddingTop="5dp"
             android:paddingEnd="20dp"
@@ -111,7 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
-                android:text="Xóa tất cả"
+                android:text="@string/action_delete_all"
                 android:textColor="@color/neutral_dark_darkest"
                 app:strokeColor="@color/neutral_dark_darkest" />
 
@@ -122,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:backgroundTint="@color/neutral_dark_darkest"
-                android:text="Lưu"
+                android:text="@string/action_save"
                 android:textColor="@color/neutral_light_lightest" />
         </LinearLayout>
     </LinearLayout>
