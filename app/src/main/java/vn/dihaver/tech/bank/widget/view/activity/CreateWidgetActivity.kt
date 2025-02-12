@@ -1,6 +1,5 @@
 package vn.dihaver.tech.bank.widget.view.activity
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
@@ -59,7 +58,6 @@ class CreateWidgetActivity : AppCompatActivity() {
 
     private var appWidgetIds: IntArray? = null
 
-    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
