@@ -14,6 +14,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -40,7 +42,6 @@ import vn.dihaver.tech.bank.widget.utils.ImageUtils
 import vn.dihaver.tech.bank.widget.utils.IntentUtils.getParcelableSafe
 import vn.dihaver.tech.bank.widget.utils.QrCreator
 import vn.dihaver.tech.bank.widget.utils.QrProcess
-import vn.dihaver.tech.bank.widget.utils.SystemUtils.translucentSystemBars
 import vn.dihaver.tech.bank.widget.view.adapter.ImageLogoAdapter
 import vn.dihaver.tech.bank.widget.view.adapter.ShapeQrAdapter
 import vn.dihaver.tech.bank.widget.view.adapter.ThemeAdapter
@@ -77,7 +78,10 @@ class EditQrActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.translucentSystemBars(isStatus = true, isNavigation = true)
+        enableEdgeToEdge(
+            SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
+            SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
+        )
 
         binding = ActivityEditQrBinding.inflate(layoutInflater)
         setContentView(binding.root)

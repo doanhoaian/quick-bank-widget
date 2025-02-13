@@ -12,8 +12,8 @@ android {
         applicationId = "vn.dihaver.tech.bank.widget"
         minSdk = 23
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.glide)
     implementation(libs.gson)
     implementation(libs.material)
+    implementation(libs.review)
     implementation(libs.ucrop)
     implementation(libs.zxing.android.embedded)
     testImplementation(libs.junit)

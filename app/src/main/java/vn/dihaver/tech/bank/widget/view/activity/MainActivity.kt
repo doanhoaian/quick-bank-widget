@@ -6,9 +6,12 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.github.alexzhirkevich.customqrgenerator.QrData
@@ -23,11 +26,11 @@ import vn.dihaver.tech.bank.widget.utils.FormatUtils.formatAccNumber
 import vn.dihaver.tech.bank.widget.utils.FormatUtils.formatMoneyDong
 import vn.dihaver.tech.bank.widget.utils.ImagePickerHelper
 import vn.dihaver.tech.bank.widget.utils.ImageUtils
+import vn.dihaver.tech.bank.widget.utils.InAppReviewHelper
 import vn.dihaver.tech.bank.widget.utils.IntentUtils.getParcelableSafe
 import vn.dihaver.tech.bank.widget.utils.QrCreator
 import vn.dihaver.tech.bank.widget.utils.QrProcess
 import vn.dihaver.tech.bank.widget.utils.QrUtils
-import vn.dihaver.tech.bank.widget.utils.SystemUtils.translucentSystemBars
 import vn.dihaver.tech.bank.widget.view.bottomsheet.AddMoneyBottomSheet
 import vn.dihaver.tech.bank.widget.view.bottomsheet.MoreQrBottomSheet
 import vn.dihaver.tech.bank.widget.view.bottomsheet.SelectQrBottomSheet
@@ -35,11 +38,6 @@ import vn.dihaver.tech.bank.widget.viewmodel.MainViewModel
 
 
 class MainActivity : AppCompatActivity() {
-
-    @Suppress("unused")
-    companion object {
-        const val TAG = "MainActivity"
-    }
 
     private lateinit var binding: ActivityMainBinding
 
@@ -52,7 +50,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.translucentSystemBars(isStatus = true, isNavigation = true)
+        enableEdgeToEdge(
+            SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
+            SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
+        )
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -60,6 +61,7 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
+        setupInsets()
         initComponent()
         initView()
         observeViewModel()
@@ -72,19 +74,17 @@ class MainActivity : AppCompatActivity() {
         handleWidgetIntent(intent)
     }
 
-    @Suppress("unused")
     private fun setupInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            v.setPadding(systemBars.left, 0, systemBars.right, 0)
             insets
         }
     }
 
     private fun initComponent() {
 
-        /** Init QrStorage
-         */
+        /** Init QrStorage */
         qrStorage = QrStorage(this)
         val listQr = qrStorage.getAllQr()
         viewModel.updateQrList(listQr)
@@ -97,12 +97,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        /** Init QrCreator
-         */
+        /** Init QrCreator */
         qrCreator = QrCreator(this)
 
-        /** Init ImagePickerHelper
-         */
+        /** Init ImagePickerHelper */
         imagePickerHelper = ImagePickerHelper(activity = this, allowMultiple = false) { uris ->
             val uri = uris.firstOrNull()
             uri?.let {
@@ -124,12 +122,30 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        /** Init InAppReviewHelper */
+        InAppReviewHelper(this).launchReviewFlow(this) { result ->
+            when(result) {
+                is InAppReviewHelper.ReviewResult.AlreadyReviewed -> {
+                    // Người dùng đã review trước đó
+                }
+                is InAppReviewHelper.ReviewResult.Launched -> {
+                    // Review flow đã được khởi chạy thành công
+                }
+                is InAppReviewHelper.ReviewResult.Failed -> {
+                    // Không thể khởi chạy review flow (có thể hiển thị fallback)
+                }
+                is InAppReviewHelper.ReviewResult.NotEligible -> {
+                    // Số lần mở ứng dụng không nằm trong khoảng 3 đến 5 nên không hiển thị review
+                }
+            }
+        }
+
     }
 
     private fun initView() {
 
-        /** Listener View
-         */
+        /** Listener View */
         binding.buttonMoreQr.setOnClickListener {
             moreQrBottomSheet.show()
         }
@@ -196,8 +212,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.qrEntityCurrent.observe(this) {
 
             qrStorage.updateIdQrCurrent(it.id)
-            /** Text
-             */
+            /** Text */
             if (it.accAlias.isNotEmpty()) {
                 binding.textAlias.apply {
                     visibility = View.VISIBLE
@@ -211,8 +226,7 @@ class MainActivity : AppCompatActivity() {
 
             formatTextMoney(0, "")
 
-            /** Bitmap
-             */
+            /** Bitmap */
             val dataQr = QrData.Text(it.qrContent)
             val drawableQr = qrCreator.createDrawable(dataQr, it.cusQrEntity)
             binding.imageQr.setImageDrawable(drawableQr)
@@ -235,8 +249,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    /** Activity Result
-     */
+    /** Activity Result */
     private val editQrLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
@@ -273,8 +286,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    /** BottomSheet
-     */
+    /** BottomSheet */
     private val moreQrBottomSheet: MoreQrBottomSheet by lazy {
         MoreQrBottomSheet(this, object : MoreQrBottomSheet.MoreQrBottomSheetListener {
             override fun onWidget() {
@@ -343,8 +355,7 @@ class MainActivity : AppCompatActivity() {
             })
     }
 
-    /** Dialog
-     */
+    /** Dialog */
     private fun showDialogErrorInputQr() {
         AlertDialog.Builder(this)
             .setCancelable(false)
@@ -373,23 +384,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /** Snackbar
-     */
+    /** Snackbar */
     private val snackbar: Snackbar by lazy {
         Snackbar.make(binding.root, "", Snackbar.LENGTH_LONG)
             .setBackgroundTint(getColor(R.color.neutral_light_lightest))
             .setAction("OK") {}
             .setActionTextColor(getColor(R.color.highlight_darkest))
             .setTextColor(getColor(R.color.neutral_dark_darkest))
-
-//        val view = snackbar.view
-//        val params = view.layoutParams as FrameLayout.LayoutParams
-//        params.gravity = Gravity.TOP
-//        view.layoutParams = params
     }
 
-    /** Function
-     */
+    /** Function */
     private fun openCreateWidget() {
         val intent = Intent(this, CreateWidgetActivity::class.java).apply {
             putExtra("qr_entity", viewModel.getQrEntityCurrent())
@@ -397,7 +401,6 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     private fun formatTextMoney(money: Long, content: String) {
         binding.buttonAddMoney.apply {
             text = if (money > 0) money.formatMoneyDong() else "Thêm số tiền"
@@ -405,11 +408,11 @@ class MainActivity : AppCompatActivity() {
             if (money > 0) setCompoundDrawablesWithIntrinsicBounds(
                 null,
                 null,
-                getDrawable(R.drawable.svg_fonts_edit),
+                ContextCompat.getDrawable(this@MainActivity, R.drawable.svg_fonts_edit),
                 null
             )
             else setCompoundDrawablesWithIntrinsicBounds(
-                getDrawable(R.drawable.svg_fonts_add),
+                ContextCompat.getDrawable(this@MainActivity, R.drawable.svg_fonts_add),
                 null,
                 null,
                 null
@@ -459,7 +462,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     private fun handlerTakeScreenShot(isSave: Boolean) {
         viewModel.getQrEntityCurrent()?.cusThemePath?.let { pathBG ->
             val bitmapBG =
@@ -495,7 +497,10 @@ class MainActivity : AppCompatActivity() {
                         visibility = View.VISIBLE
                         if (!isAddMoneyEmpty) {
                             setCompoundDrawablesWithIntrinsicBounds(
-                                null, null, getDrawable(R.drawable.svg_fonts_edit), null
+                                null,
+                                null,
+                                ContextCompat.getDrawable(this@MainActivity, R.drawable.svg_fonts_edit),
+                                null
                             )
                         }
                     }

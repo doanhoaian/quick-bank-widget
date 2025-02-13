@@ -5,9 +5,12 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +23,6 @@ import vn.dihaver.tech.bank.widget.data.model.QrEntity
 import vn.dihaver.tech.bank.widget.databinding.ActivityScanQrBinding
 import vn.dihaver.tech.bank.widget.utils.IntentUtils.getParcelableSafe
 import vn.dihaver.tech.bank.widget.utils.QrProcess
-import vn.dihaver.tech.bank.widget.utils.SystemUtils.translucentSystemBars
 import vn.dihaver.tech.bank.widget.viewmodel.ScanQrViewModel
 
 class ScanQrActivity : AppCompatActivity() {
@@ -40,7 +42,10 @@ class ScanQrActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.translucentSystemBars(isStatus = true, isNavigation = true)
+        enableEdgeToEdge(
+            SystemBarStyle.dark(Color.TRANSPARENT),
+            SystemBarStyle.dark(Color.TRANSPARENT)
+        )
 
         binding = ActivityScanQrBinding.inflate(layoutInflater)
         setContentView(binding.root)

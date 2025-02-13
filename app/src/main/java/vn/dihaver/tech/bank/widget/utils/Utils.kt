@@ -19,7 +19,6 @@ import android.os.Environment
 import android.os.Parcelable
 import android.provider.MediaStore
 import android.view.View
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.FileProvider
@@ -39,21 +38,6 @@ const val TAG = "Utils"
 /** Hỗ trợ hệ thống
  */
 object SystemUtils {
-    @Suppress("DEPRECATION")
-    fun Activity.translucentSystemBars(isStatus: Boolean, isNavigation: Boolean) {
-        if (isStatus) {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-            )
-        }
-        if (isNavigation) {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,
-                WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
-            )
-        }
-    }
 
     fun Activity.hideKeyboard() {
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -175,7 +159,7 @@ object ImageUtils {
         }
     }
 
-    fun Drawable.drawableQrToBitmap(bgColor: Int, size: Int = 512, drawableSize: Int = 452): Bitmap {
+    fun Drawable.drawableQrToBitmap(bgColor: Int, size: Int = 512, drawableSize: Int = 440): Bitmap {
         val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         val paint = Paint().apply {
