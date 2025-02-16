@@ -1,5 +1,5 @@
 [versions]
-agp = "8.8.0"
+agp = "8.8.1"
 activity = "1.10.0"
 androidsvg = "1.4"
 appcompat = "1.7.0"
