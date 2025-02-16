@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.gms.google-services")
     id("kotlin-parcelize")
 }
 
@@ -12,8 +13,8 @@ android {
         applicationId = "vn.dihaver.tech.bank.widget"
         minSdk = 23
         targetSdk = 35
-        versionCode = 5
-        versionName = "1.0.5"
+        versionCode = 6
+        versionName = "1.0.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -43,8 +44,16 @@ android {
 
 dependencies {
 
+    /** AndroidTest */
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
+    testImplementation(libs.junit)
+
+    /** Firebase */
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+
+    /**  */
     implementation(libs.androidsvg)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.appcompat)
@@ -60,5 +69,5 @@ dependencies {
     implementation(libs.review)
     implementation(libs.ucrop)
     implementation(libs.zxing.android.embedded)
-    testImplementation(libs.junit)
+
 }

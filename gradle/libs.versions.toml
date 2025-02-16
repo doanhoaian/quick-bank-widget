@@ -8,6 +8,7 @@ core = "3.5.3"
 coreKtx = "1.15.0"
 customQrGenerator = "2.0.0-alpha01"
 espressoCore = "3.6.1"
+firebaseBom = "33.9.0"
 floatingactionbutton = "1.10.1"
 glide = "4.16.0"
 gson = "2.11.0"
@@ -31,6 +32,8 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-palette-ktx = { module = "androidx.palette:palette-ktx", version.ref = "paletteKtx" }
 core = { module = "com.google.zxing:core", version.ref = "core" }
 custom-qr-generator = { module = "com.github.alexzhirkevich:custom-qr-generator", version.ref = "customQrGenerator" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 floatingactionbutton = { module = "com.getbase:floatingactionbutton", version.ref = "floatingactionbutton" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }

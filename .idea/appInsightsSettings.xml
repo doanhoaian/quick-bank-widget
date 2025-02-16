@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="vn.dihaver.tech.bank.widget" />
+                  <option name="mobileSdkAppId" value="1:155428378269:android:22afc1e502a6226fe66674" />
+                  <option name="projectId" value="dihaver" />
+                  <option name="projectNumber" value="155428378269" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
