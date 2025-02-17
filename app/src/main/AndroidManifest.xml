@@ -31,17 +31,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="35">
-        <receiver
-            android:name=".view.widget.QrAdvancedWidget"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget_qr_advanced_info" />
-        </receiver>
 
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
