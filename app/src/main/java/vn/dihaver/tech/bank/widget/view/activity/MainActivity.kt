@@ -86,11 +86,11 @@ class MainActivity : AppCompatActivity() {
 
         /** Init QrStorage */
         qrStorage = QrStorage(this)
-        val listQr = qrStorage.getAllQr()
+        val listQr = qrStorage.getAll()
         viewModel.updateQrList(listQr)
 
         if (listQr.isNotEmpty()) {
-            qrStorage.getQrCurrent()?.let {
+            qrStorage.getItemCurrent()?.let {
                 viewModel.updateQrEntityCurrent(it)
             } ?: run {
                 viewModel.updateQrEntityCurrent(listQr[listQr.size - 1])
@@ -211,7 +211,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.qrEntityCurrent.observe(this) {
 
-            qrStorage.updateIdQrCurrent(it.id)
+            qrStorage.updateItemCurrent(it.id)
             /** Text */
             if (it.accAlias.isNotEmpty()) {
                 binding.textAlias.apply {
@@ -308,7 +308,7 @@ class MainActivity : AppCompatActivity() {
             override fun onDelete() {
                 viewModel.getQrEntityCurrent()?.let {
                     if (viewModel.deleteQrEntity(it.id, qrStorage)) {
-                        val qrList = qrStorage.getAllQr()
+                        val qrList = qrStorage.getAll()
                         if (qrList.isNotEmpty()) {
                             viewModel.updateQrEntityCurrent(qrList[qrList.size - 1])
                         }
@@ -455,7 +455,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleWidgetIntent(intent: Intent) {
         intent.getStringExtra("qr_entity_id")?.let {
-            val qrEntity = qrStorage.getQrById(it)
+            val qrEntity = qrStorage.getById(it)
             if (qrEntity != null) {
                 viewModel.updateQrEntityCurrent(qrEntity)
             }

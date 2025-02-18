@@ -20,8 +20,8 @@ class MainViewModel : ViewModel() {
     }
 
     fun addQrEntity(qrEntity: QrEntity, qrStorage: QrStorage, isDuplicate: Boolean = false): Boolean {
-        return if (qrStorage.addQr(qrEntity, isDuplicate)) {
-            updateQrList(qrStorage.getAllQr())
+        return if (qrStorage.add(qrEntity, isDuplicate)) {
+            updateQrList(qrStorage.getAll())
             true
         } else {
             false
@@ -29,8 +29,8 @@ class MainViewModel : ViewModel() {
     }
 
     fun editQrEntity(qrEntity: QrEntity, qrStorage: QrStorage): Boolean {
-        return if (qrStorage.updateQr(qrEntity)) {
-            updateQrList(qrStorage.getAllQr())
+        return if (qrStorage.update(qrEntity)) {
+            updateQrList(qrStorage.getAll())
             true
         } else {
             false
@@ -38,8 +38,8 @@ class MainViewModel : ViewModel() {
     }
 
     fun deleteQrEntity(id: String, qrStorage: QrStorage): Boolean {
-        return if (qrStorage.deleteQrById(id)) {
-            updateQrList(qrStorage.getAllQr())
+        return if (qrStorage.deleteById(id)) {
+            updateQrList(qrStorage.getAll())
             true
         } else {
             false

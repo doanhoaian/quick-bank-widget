@@ -66,6 +66,20 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/button_backup_restore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="15dp"
+                    android:padding="20dp"
+                    android:text="@string/action_backup_restore_data"
+                    android:textColor="@color/neutral_dark_dark"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/svg_solar_database"
+                    app:drawableEndCompat="@drawable/svg_solar_alt_arrow_right"
+                    app:drawableTint="@color/neutral_dark_medium" />
+
+                <TextView
                     android:id="@+id/button_request"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
