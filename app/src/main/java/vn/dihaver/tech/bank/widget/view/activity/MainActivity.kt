@@ -12,8 +12,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.github.alexzhirkevich.customqrgenerator.QrData
 import com.google.android.material.snackbar.Snackbar
 import vn.dihaver.tech.bank.widget.R
@@ -29,8 +27,9 @@ import vn.dihaver.tech.bank.widget.utils.ImageUtils
 import vn.dihaver.tech.bank.widget.utils.InAppReviewHelper
 import vn.dihaver.tech.bank.widget.utils.IntentUtils.getParcelableSafe
 import vn.dihaver.tech.bank.widget.utils.QrCreator
+import vn.dihaver.tech.bank.widget.utils.QrDecoder
 import vn.dihaver.tech.bank.widget.utils.QrProcess
-import vn.dihaver.tech.bank.widget.utils.QrUtils
+import vn.dihaver.tech.bank.widget.utils.SystemUtils.applyInsets
 import vn.dihaver.tech.bank.widget.view.bottomsheet.AddMoneyBottomSheet
 import vn.dihaver.tech.bank.widget.view.bottomsheet.MoreQrBottomSheet
 import vn.dihaver.tech.bank.widget.view.bottomsheet.SelectQrBottomSheet
@@ -45,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var qrStorage: QrStorage
     private lateinit var qrCreator: QrCreator
+    private lateinit var qrDecoder: QrDecoder
     private lateinit var imagePickerHelper: ImagePickerHelper
 
 
@@ -75,11 +75,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, 0, systemBars.right, 0)
-            insets
-        }
+        binding.main.applyInsets(topPadding = 0, bottomPadding = 0)
+        binding.overlay.applyInsets()
+        binding.content.applyInsets()
     }
 
     private fun initComponent() {
@@ -100,23 +98,26 @@ class MainActivity : AppCompatActivity() {
         /** Init QrCreator */
         qrCreator = QrCreator(this)
 
+        /** Init QrDecoder */
+        qrDecoder = QrDecoder(this)
+
         /** Init ImagePickerHelper */
         imagePickerHelper = ImagePickerHelper(activity = this, allowMultiple = false) { uris ->
             val uri = uris.firstOrNull()
             uri?.let {
-                QrUtils.decodeQrFromImage(it, this) { qrResult ->
-                    if (qrResult == null) {
+                qrDecoder.decodeToString(uri) { qrContent ->
+                    if (qrContent == null) {
                         showDialogErrorInputQr()
-                        return@decodeQrFromImage
+                        return@decodeToString
                     }
 
-                    if (!QrProcess.isQrBank(qrResult)) {
+                    if (!QrProcess.isQrBank(qrContent)) {
                         showDialogErrorInputQr()
-                        return@decodeQrFromImage
+                        return@decodeToString
                     }
 
                     val intent = Intent(this, EditQrActivity::class.java).apply {
-                        putExtra("qr_content", qrResult)
+                        putExtra("qr_content", qrContent)
                     }
                     editQrLauncher.launch(intent)
                 }

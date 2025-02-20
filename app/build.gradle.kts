@@ -13,8 +13,8 @@ android {
         applicationId = "vn.dihaver.tech.bank.widget"
         minSdk = 23
         targetSdk = 35
-        versionCode = 8
-        versionName = "1.0.8"
+        versionCode = 9
+        versionName = "1.1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

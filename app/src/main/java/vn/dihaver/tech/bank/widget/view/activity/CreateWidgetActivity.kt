@@ -20,8 +20,6 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,6 +35,7 @@ import vn.dihaver.tech.bank.widget.utils.BitmapUtils
 import vn.dihaver.tech.bank.widget.utils.CalculateUtils.dpToPixel
 import vn.dihaver.tech.bank.widget.utils.IntentUtils.getParcelableSafe
 import vn.dihaver.tech.bank.widget.utils.QrCreator
+import vn.dihaver.tech.bank.widget.utils.SystemUtils.applyInsets
 import vn.dihaver.tech.bank.widget.view.adapter.WidgetAdapter
 import vn.dihaver.tech.bank.widget.view.widget.QrAdvancedWidget
 import vn.dihaver.tech.bank.widget.view.widget.QrSimpleWidget
@@ -90,11 +89,7 @@ class CreateWidgetActivity : AppCompatActivity() {
     }
 
     private fun setupInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        binding.main.applyInsets()
     }
 
     private fun initComponents() {

@@ -13,8 +13,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
@@ -25,6 +23,7 @@ import kotlinx.coroutines.withContext
 import vn.dihaver.tech.bank.widget.R
 import vn.dihaver.tech.bank.widget.data.storage.QrStorage
 import vn.dihaver.tech.bank.widget.databinding.ActivitySettingsBinding
+import vn.dihaver.tech.bank.widget.utils.SystemUtils.applyInsets
 import vn.dihaver.tech.bank.widget.view.bottomsheet.BackupRestoreBottomSheet
 import vn.dihaver.tech.bank.widget.viewmodel.SettingsViewModel
 
@@ -57,11 +56,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun setupInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        binding.main.applyInsets()
     }
 
     private fun initComponents() {

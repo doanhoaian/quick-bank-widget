@@ -22,6 +22,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.FileProvider
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -32,12 +34,27 @@ import java.util.Date
 import java.util.Locale
 import java.util.UUID
 
-const val TAG = "Utils"
 
-
-/** Hỗ trợ hệ thống
- */
+/** Hỗ trợ hệ thống */
 object SystemUtils {
+
+    fun View.applyInsets(
+        leftPadding: Int? = null,
+        topPadding: Int? = null,
+        rightPadding: Int? = null,
+        bottomPadding: Int? = null
+    ) {
+        ViewCompat.setOnApplyWindowInsetsListener(this) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(
+                leftPadding ?: systemBars.left,
+                topPadding ?: systemBars.top,
+                rightPadding ?: systemBars.right,
+                bottomPadding ?: systemBars.bottom
+            )
+            insets
+        }
+    }
 
     fun Activity.hideKeyboard() {
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -67,8 +84,7 @@ object SystemUtils {
 }
 
 
-/** Xử lí ảnh
- */
+/** Xử lý ảnh */
 object ImageUtils {
     fun takeScreenshot(context: Context, view: View, bitmapBG: Bitmap?, isSave: Boolean) {
         var bitmap = getBitmapFromView(view)
@@ -179,8 +195,7 @@ object ImageUtils {
 }
 
 
-/** Định dạng dữ liệu
- */
+/** Định dạng dữ liệu */
 object FormatUtils {
     fun String.formatAccNumber(): String {
         if (this.length < 3) {
@@ -248,11 +263,9 @@ object FormatUtils {
 }
 
 
-/** Xử lý Intent và Parcelable
- */
+/** Xử lý Intent và Parcelable */
 object IntentUtils {
-    /** Lấy Parcelable an toàn, hỗ trợ cả API 33 trở lên và API cũ hơn.
-     */
+    /** Lấy Parcelable an toàn, hỗ trợ cả API 33 trở lên và API cũ hơn. */
     inline fun <reified T : Parcelable> Intent.getParcelableSafe(key: String): T? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             getParcelableExtra(key, T::class.java)
@@ -264,8 +277,7 @@ object IntentUtils {
 }
 
 
-/** Tính toán và chuyển đổi
- */
+/** Tính toán và chuyển đổi */
 object CalculateUtils {
     fun calculateNoOfColumns(context: Context, dpItem: Int, dpPaddingContainer: Int = 0): Int {
         val displayMetrics = context.resources.displayMetrics
@@ -279,8 +291,7 @@ object CalculateUtils {
         return (this * density).toInt()
     }
 
-    /** Tính toán tổng CRC16
-     */
+    /** Tính toán tổng CRC16 */
     fun ByteArray.generateCheckSumCRC16(): Int {
         var crc = 0xFFFF
         var temp: Int
@@ -304,11 +315,9 @@ object CalculateUtils {
 }
 
 
-/** Xử lí List
- */
+/** Xử lí List */
 object ListUtils {
-    /** Sắp xếp List Data Class
-     */
+    /** Sắp xếp List Data Class */
     fun <T> List<T>.sortList(propertySelector: (T) -> String, ascending: Boolean = true): List<T> {
         return if (ascending) {
             this.sortedBy(propertySelector)

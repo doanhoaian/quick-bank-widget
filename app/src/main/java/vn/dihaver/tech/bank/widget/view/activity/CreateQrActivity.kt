@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -119,10 +120,13 @@ class CreateQrActivity : AppCompatActivity() {
             binding.editTextAccountNumber.setText("")
         }
 
-        binding.editTextAccountNumber.setOnEditorActionListener { view, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                if (view.text.toString().isNotEmpty()) {
-                    viewModel.updateBankAccountNumber(binding.editTextAccountNumber.toString())
+        binding.editTextAccountNumber.setOnEditorActionListener { view, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                (event != null && event.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER)
+            ) {
+                val accountNumber = view.text.toString().trim()
+                if (accountNumber.isNotEmpty()) {
+                    viewModel.updateBankAccountNumber(accountNumber)
                 }
                 true
             } else {
@@ -138,8 +142,10 @@ class CreateQrActivity : AppCompatActivity() {
             }
         }
 
-        binding.editTextAccountName.setOnEditorActionListener { view, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
+        binding.editTextAccountName.setOnEditorActionListener { view, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                (event != null && event.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER)
+            ) {
                 LoadingDialog.show(this)
 
                 view.clearFocus()

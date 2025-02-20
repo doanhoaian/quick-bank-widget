@@ -19,8 +19,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.GridLayoutManager
 import com.github.alexzhirkevich.customqrgenerator.QrData
@@ -42,6 +40,7 @@ import vn.dihaver.tech.bank.widget.utils.ImageUtils
 import vn.dihaver.tech.bank.widget.utils.IntentUtils.getParcelableSafe
 import vn.dihaver.tech.bank.widget.utils.QrCreator
 import vn.dihaver.tech.bank.widget.utils.QrProcess
+import vn.dihaver.tech.bank.widget.utils.SystemUtils.applyInsets
 import vn.dihaver.tech.bank.widget.view.adapter.ImageLogoAdapter
 import vn.dihaver.tech.bank.widget.view.adapter.ShapeQrAdapter
 import vn.dihaver.tech.bank.widget.view.adapter.ThemeAdapter
@@ -97,11 +96,7 @@ class EditQrActivity : AppCompatActivity() {
     }
 
     private fun setupInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
-            insets
-        }
+        binding.main.applyInsets(topPadding = 0)
     }
 
     private fun initComponent() {

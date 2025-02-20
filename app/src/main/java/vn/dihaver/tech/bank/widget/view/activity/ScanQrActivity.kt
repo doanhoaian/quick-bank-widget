@@ -15,14 +15,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.DecoratedBarcodeView
 import vn.dihaver.tech.bank.widget.data.model.QrEntity
 import vn.dihaver.tech.bank.widget.databinding.ActivityScanQrBinding
 import vn.dihaver.tech.bank.widget.utils.IntentUtils.getParcelableSafe
 import vn.dihaver.tech.bank.widget.utils.QrProcess
+import vn.dihaver.tech.bank.widget.utils.SystemUtils.applyInsets
 import vn.dihaver.tech.bank.widget.viewmodel.ScanQrViewModel
 
 class ScanQrActivity : AppCompatActivity() {
@@ -74,11 +73,8 @@ class ScanQrActivity : AppCompatActivity() {
     }
 
     private fun setupInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(systemBars())
-            v.setPadding(systemBars.left, 0, systemBars.right, 0)
-            insets
-        }
+        binding.main.applyInsets(topPadding = 0, bottomPadding = 0)
+        binding.content.applyInsets()
     }
 
     private fun checkCameraPermission() {
