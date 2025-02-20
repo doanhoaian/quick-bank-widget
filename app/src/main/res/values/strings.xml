@@ -29,6 +29,18 @@
     <string name="label_alias_name">Tên gợi nhớ</string>
     <string name="label_all_widget">Tất cả mẫu Widget</string>
     <string name="label_background_color">Màu nền</string>
+
+
+    <string name="action_backup_data">Sao lưu dữ liệu</string>
+    <string name="action_backup_restore_data"><![CDATA[Sao lưu & Khôi phục dữ liệu]]></string>
+    <string name="action_restore_data">Khôi phục dữ liệu</string>
+
+    <string name="ad_id_application">ca-app-pub-6520168811121662~4389995122</string>
+    <string name="ad_id_banner">ca-app-pub-6520168811121662/5966978286</string>
+
+<!--    Test Ad-->
+<!--    <string name="ad_id_banner">ca-app-pub-3940256099942544/6300978111</string>-->
+
     <string name="label_bank_logo">Logo ngân hàng</string>
     <string name="label_body">Thân</string>
     <string name="label_body_shape">Hình dạng Thân</string>
@@ -39,6 +51,7 @@
     <string name="label_eye_frame_shape">Hình dạng Mắt ngoài</string>
     <string name="label_fab">Các câu hỏi thường gặp</string>
     <string name="label_faq">Câu hỏi thường gặp</string>
+    <string name="label_file_name_backup">Backup_QrWallet.qrw</string>
     <string name="label_flash_light">Đèn Flash</string>
     <string name="label_image">Image</string>
     <string name="label_logo">Logo</string>
@@ -55,6 +68,8 @@
     <string name="label_vnd">VND</string>
 
     <string name="message_create_qr_to">Bạn muốn tạo QR cho</string>
+    <string name="message_describe_backup">Sao lưu danh sách QR của bạn thành tệp (*.qrw) để lưu trữ hoặc chia sẻ.</string>
+    <string name="message_describe_restore">Khôi phục danh sách QR từ tệp (*.qrw) đã lưu trên thiết bị.</string>
     <string name="message_error_try_again">Đã xảy ra lỗi, vui lòng thử lại</string>
     <string name="message_guide_add_qr">Nhấn vào + để thêm QR nhận tiền cho bạn.</string>
     <string name="message_how_much">số tiền?</string>
@@ -72,10 +87,4 @@
     <string name="url_fab">https://dihaver.blogspot.com/p/faq.html</string>
     <string name="url_privacy_policy">https://dihaver.blogspot.com/p/privacy-policy.html</string>
     <string name="url_terms_conditions">https://dihaver.blogspot.com/p/terms-conditions.html</string>
-    <string name="action_backup_restore_data"><![CDATA[Sao lưu & Khôi phục dữ liệu]]></string>
-    <string name="action_backup_data">Sao lưu dữ liệu</string>
-    <string name="action_restore_data">Khôi phục dữ liệu</string>
-    <string name="label_file_name_backup">Backup_QrWallet.qrw</string>
-    <string name="message_describe_restore">Khôi phục danh sách QR từ tệp (*.qrw) đã lưu trên thiết bị.</string>
-    <string name="message_describe_backup">Sao lưu danh sách QR của bạn thành tệp (*.qrw) để lưu trữ hoặc chia sẻ.</string>
 </resources>

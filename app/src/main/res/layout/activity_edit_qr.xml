@@ -650,6 +650,13 @@
                     android:text="@string/action_save_changed"
                     android:textColor="@color/neutral_light_lightest" />
             </LinearLayout>
+
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/ad_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:adSize="BANNER"
+                app:adUnitId="@string/ad_id_banner" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -52,6 +52,8 @@ dependencies {
     /** Firebase */
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
+    implementation(libs.firebase.messaging)
+    implementation(libs.play.services.ads)
 
     /**  */
     implementation(libs.androidsvg)

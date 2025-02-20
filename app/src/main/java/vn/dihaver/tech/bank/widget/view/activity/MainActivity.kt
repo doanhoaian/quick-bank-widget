@@ -13,6 +13,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.github.alexzhirkevich.customqrgenerator.QrData
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.snackbar.Snackbar
 import vn.dihaver.tech.bank.widget.R
 import vn.dihaver.tech.bank.widget.data.model.QrEntity
@@ -47,6 +50,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var qrDecoder: QrDecoder
     private lateinit var imagePickerHelper: ImagePickerHelper
 
+    private var adBanner: AdView? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +69,7 @@ class MainActivity : AppCompatActivity() {
         setupInsets()
         initComponent()
         initView()
+        initAds()
         observeViewModel()
 
         handleWidgetIntent(intent)
@@ -74,10 +80,29 @@ class MainActivity : AppCompatActivity() {
         handleWidgetIntent(intent)
     }
 
+    override fun onResume() {
+        super.onResume()
+        adBanner?.resume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        adBanner?.pause()
+    }
+
     private fun setupInsets() {
         binding.main.applyInsets(topPadding = 0, bottomPadding = 0)
         binding.overlay.applyInsets()
         binding.content.applyInsets()
+    }
+
+    private fun initAds() {
+        MobileAds.initialize(this) {}
+
+        val adRequest = AdRequest.Builder().build()
+        adBanner = binding.adView
+        adBanner?.loadAd(adRequest)
+
     }
 
     private fun initComponent() {
@@ -486,7 +511,7 @@ class MainActivity : AppCompatActivity() {
             binding.containerQr.post {
                 ImageUtils.takeScreenshot(
                     context = this@MainActivity,
-                    view = binding.content,
+                    view = binding.contentQr,
                     bitmapBG = bitmapBG,
                     isSave = isSave
                 )

@@ -33,15 +33,17 @@
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nested_scroll"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="140dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/content_qr"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
+                    android:layout_height="match_parent"
                     android:clipToPadding="false"
                     android:paddingTop="45dp"
-                    android:paddingBottom="100dp">
+                    android:paddingBottom="20dp">
 
                     <TextView
                         android:id="@+id/text_guide"
@@ -327,7 +329,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_above="@+id/ad_view"
                 android:baselineAligned="false"
                 android:clipToPadding="false"
                 android:orientation="horizontal"
@@ -407,8 +409,8 @@
                 android:id="@+id/fab_expand_menu_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_above="@+id/ad_view"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentBottom="true"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="8dp"
                 android:contentDescription="@string/action_add_qr"
@@ -450,6 +452,15 @@
                     app:fab_title="Tự tạo QR" />
 
             </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/ad_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                app:adSize="BANNER"
+                app:adUnitId="@string/ad_id_banner" />
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

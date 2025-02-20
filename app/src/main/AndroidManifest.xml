@@ -83,6 +83,14 @@
             </intent-filter>
         </activity>
 
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_name" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/ad_id_application"/>
+
         <receiver
             android:name=".view.widget.QrSimpleWidget"
             android:exported="false">

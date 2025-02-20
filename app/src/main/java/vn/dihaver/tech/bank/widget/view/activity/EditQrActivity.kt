@@ -22,6 +22,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.GridLayoutManager
 import com.github.alexzhirkevich.customqrgenerator.QrData
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
@@ -61,6 +63,8 @@ class EditQrActivity : AppCompatActivity() {
     private lateinit var eyeBallShapeAdapter: ShapeQrAdapter
     private lateinit var themeAdapter: ThemeAdapter
 
+    private var adBanner: AdView? = null
+
     /** Thông số tùy chỉnh Ratio giữa Preview & Edit
      */
     private val maxRatio = 0.7F
@@ -92,11 +96,29 @@ class EditQrActivity : AppCompatActivity() {
         handlerQrEntity()
         initComponent()
         initView()
+        initAds()
         observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adBanner?.resume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        adBanner?.pause()
     }
 
     private fun setupInsets() {
         binding.main.applyInsets(topPadding = 0)
+    }
+
+    private fun initAds() {
+        val adRequest = AdRequest.Builder().build()
+        adBanner = binding.adView
+        adBanner?.loadAd(adRequest)
+
     }
 
     private fun initComponent() {
