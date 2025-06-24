@@ -1,5 +1,6 @@
 package vn.dihaver.tech.bank.widget.view.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
@@ -8,7 +9,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -45,6 +45,9 @@ class CreateQrActivity : AppCompatActivity() {
     private val viewModel: CreateQrViewModel by viewModels()
 
     private lateinit var bankAdapter: BankAdapter
+
+    private var isUserFocusNumber = false
+    private var isUserFocusName = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +86,7 @@ class CreateQrActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initView() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -120,32 +124,36 @@ class CreateQrActivity : AppCompatActivity() {
             binding.editTextAccountNumber.setText("")
         }
 
-        binding.editTextAccountNumber.setOnEditorActionListener { view, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE ||
-                (event != null && event.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER)
-            ) {
+        binding.editTextAccountNumber.setOnEditorActionListener { view, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 val accountNumber = view.text.toString().trim()
                 if (accountNumber.isNotEmpty()) {
                     viewModel.updateBankAccountNumber(accountNumber)
                 }
                 true
-            } else {
-                false
+            } else false
+        }
+
+        binding.editTextAccountNumber.setOnTouchListener { _, motionEvent ->
+            if (motionEvent.action == MotionEvent.ACTION_DOWN) {
+                isUserFocusNumber = true
             }
+            false
         }
 
         binding.editTextAccountNumber.setOnFocusChangeListener { _, b ->
-            if (b) {
-                viewModel.updateBankAccountNumber("")
-                viewModel.updateQrData("")
-                binding.editTextAccountName.setText("")
+            if (isUserFocusNumber) {
+                if (b) {
+                    viewModel.updateBankAccountNumber("")
+                    viewModel.updateQrData("")
+                    binding.editTextAccountName.setText("")
+                }
             }
+            isUserFocusNumber = false
         }
 
-        binding.editTextAccountName.setOnEditorActionListener { view, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE ||
-                (event != null && event.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER)
-            ) {
+        binding.editTextAccountName.setOnEditorActionListener { view, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 LoadingDialog.show(this)
 
                 view.clearFocus()
@@ -160,15 +168,23 @@ class CreateQrActivity : AppCompatActivity() {
                     )
                 }
                 true
-            } else {
-                false
+            } else false
+        }
+
+        binding.editTextAccountName.setOnTouchListener { _, motionEvent ->
+            if (motionEvent.action == MotionEvent.ACTION_DOWN) {
+                isUserFocusName = true
             }
+            false
         }
 
         binding.editTextAccountName.setOnFocusChangeListener { _, b ->
-            if (b) {
-                viewModel.updateQrData("")
+            if (isUserFocusName) {
+                if (b) {
+                    viewModel.updateQrData("")
+                }
             }
+            isUserFocusName = false
         }
 
         binding.buttonConfirm.setOnClickListener {
@@ -206,6 +222,7 @@ class CreateQrActivity : AppCompatActivity() {
                 }
             }
         }
+
 
         viewModel.qrData.observe(this) { qrData ->
             if (qrData.isNotEmpty()) {
